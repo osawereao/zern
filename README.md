@@ -15,7 +15,7 @@ ZERN™ Framework is a web framework which aims to be simple, small and extremel
 ZERN™ Framework is a free and open-source, Apache licensed project maintaining vanilla languages combined with clean code separation using a derivative of Model–view–controller architecture.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-red.svg)](https://github.com/eirvo/zern/blob/master/LICENSE)
-[![Version](https://img.shields.io/badge/Version-Alpha-blue.svg)](https://github.com/eirvo/zern/releases/latest)
+[![Version](https://img.shields.io/badge/Version-PreAlpha-blue.svg)](https://github.com/eirvo/zern/releases/latest)
 [![Generic badge](https://img.shields.io/badge/Creator-ODAO™%20OSAWERE-green.svg)](https://www.osawere.com/)
 [![Generic badge](https://img.shields.io/badge/Wiki-Read-1abc9c.svg)](https://github.com/eirvo/zern/wiki)
 [![Generic badge](https://img.shields.io/badge/Support-allo@eirvo.com-yellow.svg)](https://www.eirvo.com/support)
