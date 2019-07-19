@@ -16,6 +16,6 @@ ZERN™ Framework is a free and open-source, Apache licensed project maintaining
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-red.svg)](https://github.com/eirvo/zern/blob/master/LICENSE)
 [![Version](https://img.shields.io/badge/Version-Alpha-blue.svg)](https://github.com/eirvo/zern/releases/latest)
-[![Generic badge](https://img.shields.io/badge/Creator-ANTHONY%20ODAO™%20OSAWERE-green.svg)](https://www.osawere.com/)
+[![Generic badge](https://img.shields.io/badge/Creator-ODAO™%20OSAWERE-green.svg)](https://www.osawere.com/)
 [![Generic badge](https://img.shields.io/badge/Wiki-Read-1abc9c.svg)](https://github.com/eirvo/zern/wiki)
 [![Generic badge](https://img.shields.io/badge/Support-allo@eirvo.com-yellow.svg)](https://www.eirvo.com/support)
