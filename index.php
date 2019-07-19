@@ -7,15 +7,13 @@
  * PHP | index::root ~ default file
  **/
 
-# DEFINE APP MODE - [DEV|BETA|PROD|OFF|MAINTENANCE] -R
-define('oAPP_MODE', 'dev');
-
-# PROJECT CONFIGURATION -R
+//========== PROJECT CONFIGURATION -R ==========//
+define('oAPP_MODE', 'dev'); #[DEV|BETA|PROD|OFF|MAINTENANCE] -R
 $oConfig = array();
 $oConfig['project'] = 'ZenQ';
 $oConfig['ver'] = '1.0';
-$oConfig['ifip'] = 'zern'; /*The path to app when accessed via IP*/
-$oConfig['url'] = 'zern.co'; /*The base URL to app*/
+$oConfig['ifip'] = 'zern'; #path to app via IP
+$oConfig['url'] = 'zern.co'; #base URL to app
 
 
 //========== ZERN PATH & LIBRARY ==========//
@@ -29,9 +27,12 @@ if(file_exists('.zern.php')){
 	if(file_exists($zertInit)){
 		require $zertInit;
 		if((!defined('oPROJECT') || oPROJECT == '') || !file_exists(oPROJECT.'ignite.php')){
-			exit('ZE404: Ignition Missing');
+			exit('ZE404B: Missing Ignition');
 		}
 		require oPROJECT.'ignite.php';
 	}
+}
+elseif(!defined('oAPP_MODE') || oAPP_MODE == '' || oAPP_MODE == 'dev'){
+	exit('ZE404A: Zern Initializer [.zern.php]');
 }
 ?>
