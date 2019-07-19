@@ -31,8 +31,11 @@ if(file_exists('.zern.php')){
 		}
 		require oPROJECT.'ignite.php';
 	}
+	elseif(!defined('oAPP_MODE') || oAPP_MODE == '' || oAPP_MODE == 'dev'){
+		exit("ZE404B: Zern Initializer [{$zertInit}]");
+	}
 }
 elseif(!defined('oAPP_MODE') || oAPP_MODE == '' || oAPP_MODE == 'dev'){
-	exit('ZE404A: Zern Initializer [.zern.php]');
+	exit('ZE404A: Zern Root [.zern.php]');
 }
 ?>
