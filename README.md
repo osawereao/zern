@@ -1,4 +1,4 @@
-[<img src="_o/www/zern-code.png"/>](https://eirvo.org/zern/)
+[<img src="_o/www/banner.png"/>](https://eirvo.org/zern/)
 
 # ZERN™ Framework
 
