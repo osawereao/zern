@@ -1,0 +1,10 @@
+# Object file
+*.o
+
+# Ada Library Information
+*.ali
+
+# Ignore Directory
+/_o/ignor/
+_notes/
+.vscode/
