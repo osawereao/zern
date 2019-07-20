@@ -8,46 +8,38 @@
  */
 
 class oPDO {
-	var $name;
-	var $user;
-	var $pass;
-	var $host;
-	var $userz;
-	var $pdo;
+	public $userz;
 
 	//****** CONSTRUCT [initiate database connection] ******//
 	public function __construct($config='')
 	{
 		if(!empty($config) && is_array($config)){
-			if(!empty($config['db_name'])){$this->name = $config['db_name'];}
-			if(!empty($config['db_user'])){$this->user = $config['db_user'];}
-			if(!empty($config['db_pass'])){$this->pass = $config['db_pass'];}
-			if(!empty($config['db_host'])){$this->host = $config['db_host'];}
+			#TODO ~ validate config
 			if(!empty($config['db_userz'])){$this->userz = $config['db_userz'];}
-			return $this->connect();
+			return $this->connect($config);
 		}
 		else {
-			exit('Requires DB Config');
+			exit('Requires DB Configuration');
 		}
 	}//******** END ********//
 
 
 	//****** CONNECT [create database connection] ******//
-	private function connect()
+	private function connect($config)
 	{
-		$dsn = 'mysql:dbname=' . $this->name . ';host=' . $this->host;
+		$dsn = 'mysql:dbname=' . $config['db_name'] . ';host=' . $config['db_host'];
 		try {
-			$connect = new PDO($dsn, $this->user, $this->pass);
+			$connect = new PDO($dsn, $config['db_user'], $config['db_pass']);
 		} catch (PDOException $e){
-			if(!defined('oAPP_MODE') || oAPP_MODE == '' || oAPP_MODE == 'off'){
+			if(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'off'){
 				exit('ZE503: Error Occurred');
 			}
 			else {
 				exit('Connection Failed: ('.$e->getMessage().')');
 			}
 		}
-		$this->pdo = $connect;
-		return $this->pdo;
+
+		return $connect;
 	}//******** END ********//
 
 
@@ -234,11 +226,12 @@ class oPDO {
 	}
 
 
-	//****** RUN SQL [for query with resultset] ******//
-	public function runSQL(string $query, $return='oRECORD')
+	//****** RUN SQL [for query with result-set] ******//
+	public function runSQL($query, $return='oRECORD')
 	{
 		if(!empty($query)){
-			$pdo = $this->pdo;
+			// $pdo = $this->pdo;
+			$pdo = $this->connect();
 			if(oText::in($query, 'oUSERZ_TABLE')){
 				$query = oText::swap($query, 'oUSERZ_TABLE', $this->userz);
 			}
