@@ -16,14 +16,14 @@ class oPDO {
 	var $pdo;
 
 	//****** CONSTRUCT [initiate database connection] ******//
-	public function __construct($db='')
+	public function __construct($config='')
 	{
-		if(!empty($db) && is_array($db)){
-			if(!empty($db['db_name'])){$this->name = $db['db_name'];}
-			if(!empty($db['db_user'])){$this->user = $db['db_user'];}
-			if(!empty($db['db_pass'])){$this->pass = $db['db_pass'];}
-			if(!empty($db['db_host'])){$this->host = $db['db_host'];}
-			if(!empty($db['db_userz'])){$this->userz = $db['db_userz'];}
+		if(!empty($config) && is_array($config)){
+			if(!empty($config['db_name'])){$this->name = $config['db_name'];}
+			if(!empty($config['db_user'])){$this->user = $config['db_user'];}
+			if(!empty($config['db_pass'])){$this->pass = $config['db_pass'];}
+			if(!empty($config['db_host'])){$this->host = $config['db_host'];}
+			if(!empty($config['db_userz'])){$this->userz = $config['db_userz'];}
 			return $this->connect();
 		}
 		else {
