@@ -33,7 +33,7 @@ else {
 		else {
 			require $initZF;
 			if((!defined('oPROJECT') || oPROJECT == '') || !file_exists(oPROJECT.'ignite.php')){
-				exit('ZE404C: Missing Ignition');
+				exit('ZE404C: PROJECT IGNITION');
 			}
 			require oPROJECT.'ignite.php';
 		}
