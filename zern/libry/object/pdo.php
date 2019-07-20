@@ -9,6 +9,7 @@
 
 class oPDO {
 	public $userz;
+	public $pdo;
 
 	//****** CONSTRUCT [initiate database connection] ******//
 	public function __construct($config='')
@@ -27,7 +28,7 @@ class oPDO {
 	//****** CONNECT [create database connection] ******//
 	private function connect($config)
 	{
-		$dsn = 'mysql:dbname=' . $config['db_name'] . ';host=' . $config['db_host'];
+		$dsn = 'mysql:dbname='.$config['db_name'].';host='.$config['db_host'];
 		try {
 			$connect = new PDO($dsn, $config['db_user'], $config['db_pass']);
 		} catch (PDOException $e){
@@ -39,6 +40,7 @@ class oPDO {
 			}
 		}
 
+		$this->pdo = $connect;
 		return $connect;
 	}//******** END ********//
 
@@ -230,8 +232,7 @@ class oPDO {
 	public function runSQL($query, $return='oRECORD')
 	{
 		if(!empty($query)){
-			// $pdo = $this->pdo;
-			$pdo = $this->connect();
+			$pdo = $this->pdo;
 			if(oText::in($query, 'oUSERZ_TABLE')){
 				$query = oText::swap($query, 'oUSERZ_TABLE', $this->userz);
 			}
