@@ -59,11 +59,11 @@ defined('FONT') ? null : define('FONT', 'font' . PS);
 require oCONFIG.'db.php';
 require oCONFIG.'link.php';
 require oCONFIG.'error.php';
-zernLoad(oLIBCLAS.'session');
-zernLoad(oLIBFUNC.'tool');
-zernLoad(oLIBCLAS.'text');
-zernLoad(oLIBCLAS.'url');
-zernLoad(oLIBZ.'html');
-zernLoad(oLIBRY.'zern');
-zernLoad(oLIBFUNC.'dbug');
+ZERN::inc(oLIBCLAS.'session');
+ZERN::inc(oLIBFUNC.'tool');
+ZERN::inc(oLIBCLAS.'text');
+ZERN::inc(oLIBCLAS.'url');
+ZERN::inc(oLIBZ.'html');
+// ZERN::inc(oLIBRY.'zern');
+ZERN::inc(oLIBFUNC.'dbug');
 ?>
