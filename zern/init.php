@@ -60,10 +60,11 @@ require oCONFIG.'db.php';
 require oCONFIG.'link.php';
 require oCONFIG.'error.php';
 ZERN::inc(oLIBCLAS.'session');
-ZERN::inc(oLIBFUNC.'tool');
+ZERN::inc(oLIBCLAS.'kit');
 ZERN::inc(oLIBCLAS.'text');
 ZERN::inc(oLIBCLAS.'url');
+ZERN::inc(oLIBCLAS.'period');
+ZERN::inc(oLIBFUNC.'randomiz');
 ZERN::inc(oLIBZ.'html');
 // ZERN::inc(oLIBRY.'zern');
-ZERN::inc(oLIBFUNC.'dbug');
 ?>
