@@ -9,6 +9,40 @@
 
 class oKit {
 
+
+	//-------------- Detect HTTPS & Return true or false ---------------
+	public static function hasSSL($answer='detect'){
+	$resolve = false;
+	if($answer == 'oYEAP'){$resolve = true;}
+	elseif($answer == 'oNOPE'){$resolve = false;}
+	else {//detect from server
+		$https = 'oNOHTTPS';
+		if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])){$https = $_SERVER['HTTPS'];}
+		if($https !== 'oNOHTTPS'){$https == 'oHTTPS';}
+
+		$port = 'oDEFAULT';
+		if(isset($_SERVER['SERVER_PORT']) && !empty($_SERVER['SERVER_PORT'])){$port = $_SERVER['SERVER_PORT'];}
+
+		if($https == 'oHTTPS' || $port == 443){$resolve = true;}
+		elseif(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'oHTTPS'){$resolve = true;}
+	}
+	return $resolve;
+}
+
+//-------------- Force URL to run HTTPS ---------------
+	public static function imposeSSL($permanent='oNOPE'){
+	if(empty($_SESSION['imposeSSL'])){
+		$protocol = self::hasSSL() ? 'https' : 'http';
+		if($protocol != 'https'){
+			$url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$_SESSION['imposeSSL'] = 'oYEAP';
+			if($permanent == 'oYEAP'){header('HTTP/1.1 301 Moved Permanently');}
+			oURL::redirect($url);
+			exit;
+		}
+	}
+}
+
 }
 //-------------- Check if variable is actually empty ---------------
 function isEmpty($data=''){
@@ -164,36 +198,5 @@ function formatAmount($amount, $currency='naira', $digit=''){
 }
 
 
-//-------------- Detect HTTPS & Return true or false ---------------
-function hasSSL($answer='detect'){
-	$resolve = false;
-	if($answer == 'oYEAP'){$resolve = true;}
-	elseif($answer == 'oNOPE'){$resolve = false;}
-	else {//detect from server
-		$https = 'oNOHTTPS';
-		if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])){$https = $_SERVER['HTTPS'];}
-		if($https !== 'oNOHTTPS'){$https == 'oHTTPS';}
 
-		$port = 'oDEFAULT';
-		if(isset($_SERVER['SERVER_PORT']) && !empty($_SERVER['SERVER_PORT'])){$port = $_SERVER['SERVER_PORT'];}
-
-		if($https == 'oHTTPS' || $port == 443){$resolve = true;}
-		elseif(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'oHTTPS'){$resolve = true;}
-	}
-	return $resolve;
-}
-
-//-------------- Force URL to run HTTPS ---------------
-function imposeSSL($permanent='oNOPE'){
-	if(empty($_SESSION['imposeSSL'])){
-		$protocol = hasSSL() ? 'https' : 'http';
-		if($protocol != 'https'){
-			$url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			$_SESSION['imposeSSL'] = 'oYEAP';
-			if($permanent == 'oYEAP'){header('HTTP/1.1 301 Moved Permanently');}
-			oURL::redirect($url);
-			exit;
-		}
-	}
-}
 ?>
