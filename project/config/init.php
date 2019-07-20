@@ -1,8 +1,8 @@
 <?php
 define('oAPPMODE', 'dev'); #[DEV|BETA|PROD|OFF|MAINTENANCE] -R
-$oConfig = array();
-$oConfig['project'] = 'ZenQ';
-$oConfig['ver'] = '1.0';
-$oConfig['ifip'] = 'zern'; #path to app via IP
-$oConfig['url'] = 'zern.co'; #base URL to app
+$oKonfig = array();
+$oKonfig['project'] = 'ZenQ';
+$oKonfig['ver'] = '1.0';
+$oKonfig['ifip'] = 'zern'; #path to app via IP
+$oKonfig['url'] = 'zern.co'; #base URL to app
 ?>
