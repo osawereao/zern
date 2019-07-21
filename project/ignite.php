@@ -8,7 +8,7 @@
  **/
 
 //========== LOAD LIBRARY (as needed in project) ==========//
-// inc(oLIBJ.'file');
+#inc(oLIBJ.'file');
 ZERN::inc(oLIBJ.'pdo');
 ZERN::inc(oLIBJ.'crypt');
 ZERN::inc(oLIBJ.'auth');
@@ -18,38 +18,21 @@ ZERN::inc(oLIBJ.'img');
 ZERN::inc(oLIBZ.'dbo');
 
 
+//========== INITIALIZE & RUN APP ==========//
+if(!empty($zern)){
+	$zern->initApp();
 
+	/*** ROUTE everything to APP [specific to this application] ***/
+	// if($zern->oRoute == 'site' || $zern->oRoute == 'ipaddress'){$zern->oRoute = 'app';}
+	if($zern->oRoute != 'app'){$zern->oRoute = 'app';}
 
-if(class_exists('ZERN')){
-	//========== INITIALIZE ==========//
-	$zernApp = new ZERN();
-	$zernApp->initialize();
-
-	/*If application requires database, enable library [DB driver & Auth] -above*/
-	if(class_exists('oPDO')){
-		$zernDB = new oPDO();
-		if(class_exists('oAuth')){
-			$zernAuth = new oAuth($zernDB, $zernApp);
-		}
+	$routzr = oROUT.$zern->oRoute.'.php';
+	if(file_exists($routzr)){require $routzr;}
+	elseif(defined('oAPPMODE') && oAPPMODE == 'DEV'){
+		exit("ZE4041: Missing [{$routzr}]");
 	}
-
-	if(class_exists('oURL')){
-		//========== RUN APP ==========//
-		$zernRoute = oURL::route();
-		if($zernRoute == 'site' || $zernRoute == 'ipaddress'){$zernRoute = 'app';}
-		$uriData = oURL::uriData();
-		$zernURI = $uriData['uri'];
-		$zernLink = $uriData['link'];
-		$zernAction = $uriData['action'];
-		$zernCase = $uriData['case'];
-		$routzr = oROUT.$zernRoute.'.php';
-		if(file_exists($routzr)){require $routzr;}
-		elseif(defined('oAPP_MODE') && oAPP_MODE == 'dev'){
-			exit("ZE4041: Missing [{$routzr}]");
-		}
-		else {
-			exit('ZE4042: Missing Router');
-		}
+	else {
+		exit('ZE4042: Missing Router');
 	}
 }
 ?>
