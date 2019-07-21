@@ -8,15 +8,15 @@
  */
 
 class oPDO {
-	public $userz;
-	public $pdo;
+	// private $table;
+	// private $pdo;
 
 	//****** CONSTRUCT [initiate database connection] ******//
 	public function __construct($config='')
 	{
 		if(!empty($config) && is_array($config)){
-			#TODO ~ validate config
-			if(!empty($config['db_userz'])){$this->userz = $config['db_userz'];}
+			#TODO ~ validate DB config
+			if(!empty($config['table'])){$this->table = $config['table'];}
 			return $this->connect($config);
 		}
 		else {
@@ -28,11 +28,11 @@ class oPDO {
 	//****** CONNECT [create database connection] ******//
 	private function connect($config)
 	{
-		$dsn = 'mysql:dbname='.$config['db_name'].';host='.$config['db_host'];
+		$dsn = 'mysql:dbname='.$config['name'].';host='.$config['host'];
 		try {
-			$connect = new PDO($dsn, $config['db_user'], $config['db_pass']);
+			$connect = new PDO($dsn, $config['user'], $config['pass']);
 		} catch (PDOException $e){
-			if(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'off'){
+			if(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'OFF'){
 				exit('ZE503: Error Occurred');
 			}
 			else {
@@ -166,7 +166,7 @@ class oPDO {
 	//****** SQL GUID [prepare SQL insert GID statement] ******//
 	public function insertGID($table)
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if(!empty($table)){
 			$puid = randomiz('oPUID'); $ruid = randomiz('oRUID');
 			$query = "INSERT INTO `{$table}` SET `PUID` = '{$puid}', `RUID` = '{$ruid}'";
@@ -180,7 +180,7 @@ class oPDO {
 	//-------------- Select record using Bind ---------------
 	public function select($column, string $table, $condition, $limit, $return='oRECORD')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if(!empty($table) && !empty($column) && !empty($condition)){
 			$table = oInput::clean($table);
 
@@ -234,7 +234,7 @@ class oPDO {
 		if(!empty($query)){
 			$pdo = $this->pdo;
 			if(oText::in($query, 'oUSERZ_TABLE')){
-				$query = oText::swap($query, 'oUSERZ_TABLE', $this->userz);
+				$query = oText::swap($query, 'oUSERZ_TABLE', $this->table);
 			}
 			$stmt = $pdo->prepare($query);
 			$run = $stmt->execute();
@@ -274,7 +274,7 @@ class oPDO {
 	//****** INSERT SQL [insert new record] ******//
 	public function insertSQL(string $table, array $data)
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if (!empty($table) && !empty($data)) {
 			$table = oInput::clean($table); #cleanup
 
@@ -319,7 +319,7 @@ class oPDO {
 	//****** CREATE RECORD ******//
 	public function createSQL(string $table, array $data, $return='oBOOL')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if (!empty($table) && !empty($data)) {
 			$table = oInput::clean($table); #cleanup
 			$insertGID = $this->insertGID($table); #prepare GID
@@ -350,7 +350,7 @@ class oPDO {
 	//****** UPDATE RECORD ******//
 	public function updateSQL(string $table, array $data, $condition, $limit=1, $return='oNUMROW') #return [oBOOL|oNUMROW]
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if (!empty($data) && !empty($table) && !empty($condition)) {
 			$table = oInput::clean($table);
 			$query = "UPDATE `{$table}` SET ";
@@ -383,7 +383,7 @@ class oPDO {
 	//****** DELETE RECORD ******//
 	public function deleteSQL(string $table, $condition, $limit=1, $return='oNUMROW')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if (!empty($table) && !empty($condition) && !empty($limit)) {
 			$table = oInput::clean($table);
 			$query = "DELETE FROM `{$table}`";
@@ -408,7 +408,7 @@ class oPDO {
 	//****** SELECT RECORD ******//
 	public function selectSQL($column, string $table, $condition, $limit, $return='oRECORD')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if (!empty($column) && !empty($table) && !empty($condition)) {
 			$table = oInput::clean($table);
 
@@ -439,7 +439,7 @@ class oPDO {
 	//****** READ RECORD ******//
 	public function readSQL($column, string $table, $filterLabel, $filterValue, $limit, $return='oRECORD')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if(!empty($column) && !empty($table) && !empty($filterLabel) && !empty($filterValue)){
 			$condition ="`{$filterLabel}` = '{$filterValue}'";
 			return $this->selectSQL($column, $table, $condition, $limit, $return);
@@ -451,7 +451,7 @@ class oPDO {
 	//****** DELETE ALL RECORD ******//
 	public function removeAll(string $table, $limit='NO_LIMIT')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if(!empty($table)){
 			return $this->deleteSQL($table, 'NO_COND', $limit);
 		}
@@ -462,7 +462,7 @@ class oPDO {
 	//****** TRUNCATE ALL RECORD [just like delete all but reset table] ******//
 	public function expunge(string $table)
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->userz;}
+		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
 		if (!empty($table)) {
 			$name = oInput::clean($table);
 			$query = "TRUNCATE `{$table}`";
@@ -523,7 +523,7 @@ class oPDO {
 		unset($this->user);
 		unset($this->pass);
 		unset($this->host);
-		unset($this->userz);
+		unset($this->table);
 		unset($this->pdo);
 		return;
 	}//******** END ********//
