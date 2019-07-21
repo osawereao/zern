@@ -1,7 +1,7 @@
 <?php
 //========== DATABASE CONFIGURATION ==========//
 $oKonfig['db'] = array(
-	'name' => '',
+	'name' => 'koda',
 	// 'user' => 'zenq',
 	// 'pass' => 'ZenQ',
 	// 'host' => 'localhost',
