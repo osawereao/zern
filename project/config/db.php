@@ -6,6 +6,6 @@ $oKonfig['db'] = array(
 	// 'pass' => 'ZenQ',
 	// 'host' => 'localhost',
 	// 'driver' => 'PDO',
-	// 'userz' => 'userz'
+	// 'table' => 'userx'
 );
 ?>
