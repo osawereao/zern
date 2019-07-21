@@ -48,7 +48,7 @@ class oPDO {
 	//==========** END **==========//
 
 
-	//****** SQL RECORD [prepare SQL result] ******//
+	//========== SQL RECORD [prepare SQL result] ==========//
 	private function record($stmt, $result, $query, $return)
 	{
 		if ($result === false) {
@@ -83,6 +83,7 @@ class oPDO {
 			return $result;
 		}
 	}
+	//==========** END **==========//
 
 
 	//========== SQL ERROR REPORTING [prepare & return SQL error] ==========//
@@ -112,7 +113,7 @@ class oPDO {
 	//==========** END **==========//
 
 
-	//****** SQL RESULT [return SQL result] ******//
+	//========== SQL RESULT [return SQL result] ==========//
 	private function resultSQL($stmt, $query, $return)
 	{
 		if($return == 'oBOOL'){return true;}
@@ -136,9 +137,10 @@ class oPDO {
 			}
 		}
 	}
+	//==========** END **==========//
 
 
-	//****** SQL CONDITION [prepare SQL condition statement] ******//
+	//========== SQL CONDITION [prepare SQL condition statement] ==========//
 	private function conditionSQL(array $filter, $operator='=')
 	{
 		if(!empty($filter) && !empty($operator)){
@@ -155,9 +157,10 @@ class oPDO {
 		}
 		return false;
 	}
+	//==========** END **==========//
 
 
-	//****** SQL COLUMN [prepare SQL column statement] ******//
+	//========== SQL COLUMN [prepare SQL column statement] ==========//
 	private function columnSQL($column)
 	{
 		if(!empty($column)){
@@ -179,6 +182,7 @@ class oPDO {
 		}
 		return false;
 	}
+	//==========** END **==========//
 
 
 	//========== SQL GUID [prepare SQL insert GID statement] ==========//
@@ -366,7 +370,7 @@ class oPDO {
 
 
 
-	//****** UPDATE RECORD ******//
+	//========== UPDATE RECORD ==========//
 	public function updateSQL(string $table, array $data, $condition, $limit=1, $return='oNUMROW') #return [oBOOL|oNUMROW]
 	{
 		if($table == 'oUSER_TABLE'){$table = $this->table;}
@@ -397,6 +401,7 @@ class oPDO {
 		}
 		return false;
 	}
+	//==========** END **==========//
 
 
 	//========== DELETE RECORD ==========//
