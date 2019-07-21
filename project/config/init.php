@@ -1,5 +1,5 @@
 <?php
-define('oAPPMODE', 'dev'); #[DEV|BETA|PROD|OFF|MAINTENANCE] -R
+define('oAPPMODE', 'DEV'); #[DEV|BETA|PROD|OFF|MAINTENANCE] -R
 $oKonfig = array();
 $oKonfig['project'] = 'ZenQ';
 $oKonfig['ver'] = '1.0';
