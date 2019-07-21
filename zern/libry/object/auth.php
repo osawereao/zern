@@ -14,12 +14,13 @@ class oAuth
 
 
 	//========== CONSTRUCT ==========//
-	public function __construct($connection, $url='')
+	public function __construct($connection, $url='', $link='')
 	{
 		if(is_object($connection)){
 			if(isset($connection->table)){unset($connection->table);}
 			$this->db = $connection;
 			$this->url = $url;
+			$this->link = $link;
 		} else {
 			die('Auth:: requires connection - #ZE001-DB');
 		}
@@ -171,7 +172,7 @@ class oAuth
 			if(!empty($this->url)){$location = $this->url.PS.$location;}
 			oURL::redirect($location);
 		} elseif(!empty($_SESSION['oLOCKED']) && $_SESSION['oLOCKED'] == 'oYEAP'){
-			if(!empty($this->uri) && $this->uri != 'locked'){
+			if(!empty($this->link) && $this->link != 'locked'){
 				$location = 'locked';
 				if(!empty($this->url)){$location = $this->url.PS.$location;}
 				oURL::redirect($location);
@@ -180,11 +181,11 @@ class oAuth
 			$user = $this->user($_SESSION['oUSER'], 'PUID');
 			if($user === false){
 				#TODO ~ log this improbable occurrence
-				if(!empty($this->uri) && $this->uri != 'login'){
+				if(!empty($this->link) && $this->link != 'login'){
 					$this->app->redirect('login');
 				}
 			} elseif($user == 'oNORECORD'){
-				if(!empty($this->uri) && $this->uri != 'login'){
+				if(!empty($this->link) && $this->link != 'login'){
 					$this->app->redirect('login');
 				}
 			} elseif(!empty($user['PUID'])){
