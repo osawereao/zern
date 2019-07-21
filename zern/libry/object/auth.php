@@ -5,7 +5,7 @@
  * ===================================================================================================================
  * Dependency » obj:DB, class:period
  * PHP | auth::zern ~ authentication class
- */
+ **/
 
 class oAuth
 {
