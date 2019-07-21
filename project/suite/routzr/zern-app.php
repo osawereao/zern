@@ -7,9 +7,12 @@
  * PHP | app::route ~ run app
  */
 
-$noauthLinks = array('login', 'logout', 'locked');
-if(!in_array($zern->oLink, $noauthLinks)){
-	$zern->Auth->is();
+if(isset($zern->Auth)){
+	$noauthLinks = array('login', 'logout', 'locked');
+	if(!in_array($zern->oLink, $noauthLinks)){
+		$zern->Auth->is();
+
+		}
 	// $zernAuth->timeOut('locked', 5000);
 	// require oUTIL.'auth.php';
 }
