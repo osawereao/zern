@@ -206,7 +206,7 @@ class ZERN {
 
 					/*** Call Auth ***/
 					if(class_exists('oAuth')){
-						if(!empty($this->oURL)){$zernAuth = new oAuth($this->DB, $this->oURL);}
+						if(!empty($this->oURL)){$zernAuth = new oAuth($this->DB, $this->oURL, $this->oLink);}
 						else {$zernAuth = new oAuth($this->DB);}
 						if(is_object($zernAuth)){$this->Auth = $zernAuth;}
 					}
