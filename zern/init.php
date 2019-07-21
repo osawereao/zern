@@ -56,9 +56,9 @@ defined('FONT') ? null : define('FONT', 'font' . PS);
 
 
 //========== LIBRARY ==========//
-require oCONFIG.'db.php';
-require oCONFIG.'link.php';
-require oCONFIG.'error.php';
+if(file_exists(oCONFIG.'db.php')){require oCONFIG.'db.php';}
+if(file_exists(oCONFIG.'link.php')){require oCONFIG.'link.php';}
+if(file_exists(oCONFIG.'error.php')){require oCONFIG.'error.php';}
 ZERN::inc(oLIBCLAS.'session');
 ZERN::inc(oLIBCLAS.'kit');
 ZERN::inc(oLIBCLAS.'text');
@@ -66,5 +66,4 @@ ZERN::inc(oLIBCLAS.'url');
 ZERN::inc(oLIBCLAS.'period');
 ZERN::inc(oLIBFUNC.'randomiz');
 ZERN::inc(oLIBZ.'html');
-// ZERN::inc(oLIBRY.'zern');
 ?>
