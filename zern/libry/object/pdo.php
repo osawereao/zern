@@ -5,27 +5,30 @@
  * ===================================================================================================================
  * Dependency » *
  * PHP | pdo::object ~ pdo class
- */
+ **/
 
 class oPDO {
-	// private $table;
-	// private $pdo;
+	private $table;
+	private $pdo;
 
-	//****** CONSTRUCT [initiate database connection] ******//
+	//========== CONSTRUCT [initiate database connection] ==========//
 	public function __construct($config='')
 	{
 		if(!empty($config) && is_array($config)){
 			#TODO ~ validate DB config
 			if(!empty($config['table'])){$this->table = $config['table'];}
-			return $this->connect($config);
+
+			$this->pdo = $this->connect($config);
+			return $this->pdo;
 		}
 		else {
 			exit('Requires DB Configuration');
 		}
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** CONNECT [create database connection] ******//
+	//========== CONNECT [create database connection] ==========//
 	private function connect($config)
 	{
 		$dsn = 'mysql:dbname='.$config['name'].';host='.$config['host'];
@@ -40,9 +43,9 @@ class oPDO {
 			}
 		}
 
-		$this->pdo = $connect;
 		return $connect;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
 	//****** SQL RECORD [prepare SQL result] ******//
@@ -79,19 +82,34 @@ class oPDO {
 
 			return $result;
 		}
-	}//******** END ********//
+	}
 
 
-	//****** SQL ERROR REPORTING [prepare & return SQL error] ******//
-	private function errorSQL($stmt, $query, $report='oMSG')
+	//========== SQL ERROR REPORTING [prepare & return SQL error] ==========//
+	private function errorSQL($stmt, $query, $report='oERR')
 	{
 		$error = $stmt->errorInfo();
-		$resp['oACT'] = 'F9';
-		if($report == 'oMSG'){$resp['oERROR'] = $error[2];}
-		else {$resp['oERROR'] = $error;}
+		$resp['oERROR'] = $error[0]; #SQL Error
+		$resp['oERCODE'] = $error[1]; #PDO Error
+		$resp['oERMSG'] = $error[2]; #Error Messages
 		$resp['oQUERY'] = $query;
-		return $resp;
-	}//******** END ********//
+
+		$e['oERROR'] = $resp['oERROR'];
+
+		if(defined('oAPPMODE') && oAPPMODE == 'DEV'){
+			ZERN::dbug($resp);
+			return $e;
+		}
+		elseif($report == 'oERMSG'){return $resp['oERMSG'];}
+		elseif($report == 'oERCODE'){return $resp['oERCODE'];}
+		elseif($report == 'oERROR'){return $resp['oERROR'];}
+		elseif($report == 'oQUERY'){return $resp['oQUERY'];}
+		else {
+			#TODO ~ log SQL Error
+			return $e;
+		}
+	}
+	//==========** END **==========//
 
 
 	//****** SQL RESULT [return SQL result] ******//
@@ -117,7 +135,7 @@ class oPDO {
 				}
 			}
 		}
-	}//******** END ********//
+	}
 
 
 	//****** SQL CONDITION [prepare SQL condition statement] ******//
@@ -136,7 +154,7 @@ class oPDO {
 			return $query;
 		}
 		return false;
-	}//******** END ********//
+	}
 
 
 	//****** SQL COLUMN [prepare SQL column statement] ******//
@@ -160,13 +178,13 @@ class oPDO {
 			return $query;
 		}
 		return false;
-	}//******** END ********//
+	}
 
 
-	//****** SQL GUID [prepare SQL insert GID statement] ******//
-	public function insertGID($table)
+	//========== SQL GUID [prepare SQL insert GID statement] ==========//
+	public function insertGID(string $table)
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if(!empty($table)){
 			$puid = randomiz('oPUID'); $ruid = randomiz('oRUID');
 			$query = "INSERT INTO `{$table}` SET `PUID` = '{$puid}', `RUID` = '{$ruid}'";
@@ -174,13 +192,14 @@ class oPDO {
 			return $o;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
 	//-------------- Select record using Bind ---------------
 	public function select($column, string $table, $condition, $limit, $return='oRECORD')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if(!empty($table) && !empty($column) && !empty($condition)){
 			$table = oInput::clean($table);
 
@@ -228,13 +247,13 @@ class oPDO {
 	}
 
 
-	//****** RUN SQL [for query with result-set] ******//
+	//========== RUN SQL [for query with result-set] ==========//
 	public function runSQL($query, $return='oRECORD')
 	{
 		if(!empty($query)){
 			$pdo = $this->pdo;
-			if(oText::in($query, 'oUSERZ_TABLE')){
-				$query = oText::swap($query, 'oUSERZ_TABLE', $this->table);
+			if(oText::in($query, 'oUSER_TABLE')){
+				$query = oText::swap($query, 'oUSER_TABLE', $this->table);
 			}
 			$stmt = $pdo->prepare($query);
 			$run = $stmt->execute();
@@ -265,16 +284,16 @@ class oPDO {
 			else {
 				return $this->errorSQL($stmt, $query);
 			}
-			return $run;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** INSERT SQL [insert new record] ******//
+	//========== INSERT SQL [insert new record & return] ==========//
 	public function insertSQL(string $table, array $data)
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if (!empty($table) && !empty($data)) {
 			$table = oInput::clean($table); #cleanup
 
@@ -287,7 +306,7 @@ class oPDO {
 
 			#prepare query
 			foreach ($data as $key => $value){
-				#$query = ", `" . $key . "` = '" . $value . "'";  #[Changed to BIND PARAMETERS]
+				#$query = ", `" . $key . "` = '" . $value . "'";  #<Changed to BIND PARAMETERS>
 				$column .= $key.', ';
 				$param .= ':'.$key . ', ';
 				$datalist[':'.$key] = $value;
@@ -296,30 +315,28 @@ class oPDO {
 			$param = oText::trimEdge($param, ',');
 
 			$resp = array();
-
 			$pdo = $this->pdo;
 			$query = "INSERT INTO `{$table}` ({$column}) VALUES({$param})";
 			$stmt = $pdo->prepare($query);
 			$run = $stmt->execute($datalist);
-			if($run !== false) {
-				$resp['oACT'] = 'OK';
-				$resp['oROWS'] = $stmt->rowCount();
-				$resp['oID'] = $pdo->lastInsertId();
+			if($run !== false){
+				$resp['oNUMROW'] = $stmt->rowCount();
+				$resp['oLID'] = $pdo->lastInsertId();
 			}
 			else {
-				$resp['oACT'] = 'F9';
-				$resp['oERROR'] = $stmt->errorInfo()[2];
+				$resp = $this->errorSQL($stmt, $query);
 			}
 			return $resp;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** CREATE RECORD ******//
+	//========== CREATE RECORD ==========//
 	public function createSQL(string $table, array $data, $return='oBOOL')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if (!empty($table) && !empty($data)) {
 			$table = oInput::clean($table); #cleanup
 			$insertGID = $this->insertGID($table); #prepare GID
@@ -344,13 +361,15 @@ class oPDO {
 			return $result;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
+
 
 
 	//****** UPDATE RECORD ******//
 	public function updateSQL(string $table, array $data, $condition, $limit=1, $return='oNUMROW') #return [oBOOL|oNUMROW]
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if (!empty($data) && !empty($table) && !empty($condition)) {
 			$table = oInput::clean($table);
 			$query = "UPDATE `{$table}` SET ";
@@ -377,13 +396,13 @@ class oPDO {
 			return $this->runSQL($query, $return);
 		}
 		return false;
-	}//******** END ********//
+	}
 
 
-	//****** DELETE RECORD ******//
+	//========== DELETE RECORD ==========//
 	public function deleteSQL(string $table, $condition, $limit=1, $return='oNUMROW')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if (!empty($table) && !empty($condition) && !empty($limit)) {
 			$table = oInput::clean($table);
 			$query = "DELETE FROM `{$table}`";
@@ -402,13 +421,14 @@ class oPDO {
 			return $this->runSQL($query, $return);
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** SELECT RECORD ******//
+	//========== SELECT RECORD ==========//
 	public function selectSQL($column, string $table, $condition, $limit, $return='oRECORD')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if (!empty($column) && !empty($table) && !empty($condition)) {
 			$table = oInput::clean($table);
 
@@ -433,51 +453,54 @@ class oPDO {
 			}
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** READ RECORD ******//
+	//========== READ RECORD ==========//
 	public function readSQL($column, string $table, $filterLabel, $filterValue, $limit, $return='oRECORD')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if(!empty($column) && !empty($table) && !empty($filterLabel) && !empty($filterValue)){
 			$condition ="`{$filterLabel}` = '{$filterValue}'";
 			return $this->selectSQL($column, $table, $condition, $limit, $return);
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** DELETE ALL RECORD ******//
+	//========== DELETE ALL RECORD ==========//
 	public function removeAll(string $table, $limit='NO_LIMIT')
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
 		if(!empty($table)){
 			return $this->deleteSQL($table, 'NO_COND', $limit);
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** TRUNCATE ALL RECORD [just like delete all but reset table] ******//
+	//========== TRUNCATE ALL RECORD [just like delete all but reset table] ==========//
 	public function expunge(string $table)
 	{
-		if($table == 'oUSERZ_TABLE'){$table = $this->table;}
-		if (!empty($table)) {
+		if($table == 'oUSER_TABLE'){$table = $this->table;}
+		if(!empty($table)){
 			$name = oInput::clean($table);
 			$query = "TRUNCATE `{$table}`";
-			$pdo = $this->pdo;
-			$o = $pdo->exec($query);
+			$o = $this->pdo->exec($query);
 			if($o === false && $o != 0){
 				return $this->errorSQL($pdo, $query);
 			}
 			return true;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** CREATE DATABASE ******//
+	//========== CREATE DATABASE ==========//
 	public function createDB($database, $subtle = 'YEAP')
 	{
 		if(!empty($database) && !is_array($database)){
@@ -488,35 +511,35 @@ class oPDO {
 			} else {
 				$query = "CREATE DATABASE IF NOT EXISTS `{$database}`";
 			}
-			$pdo = $this->pdo;
-			$o = $pdo->exec($query);
+			$o = $this->pdo->exec($query);
 			if($o === false){return $this->errorSQL($pdo, $query);}
 			return true;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** DROP DATABASE ******//
-	public function deleteDB(string $database, $subtle = 'YEAP')
+	//========== DROP DATABASE ==========//
+	public function deleteDB(string $database, $subtle = 'oYEAP')
 	{
 		if(!empty($database)){
 			$name = oInput::clean($database);
-			if ($subtle != 'YEAP') {
+			if ($subtle != 'oYEAP') {
 				$query = "DROP DATABASE `{$database}`";
 			} else {
 				$query = "DROP DATABASE IF EXISTS `{$database}`";
 			}
-			$pdo = $this->pdo;
-			$o = $pdo->exec($query);
+			$o = $this->pdo->exec($query);
 			if($o === false){return $this->errorSQL($pdo, $query);}
 			return true;
 		}
 		return false;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 
 
-	//****** DISCONECT DATABASE ******//
+	//========== DISCONNECT DATABASE ==========//
 	public function disconnect()
 	{
 		unset($this->name);
@@ -526,6 +549,7 @@ class oPDO {
 		unset($this->table);
 		unset($this->pdo);
 		return;
-	}//******** END ********//
+	}
+	//==========** END **==========//
 }
 ?>
