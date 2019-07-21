@@ -21,10 +21,10 @@ else {
 		$zern->setBP('oDIR', __FILE__);
 		$zern->setBP('oHOST', 'oPREP');
 		define('zernDIR', $zern->oDir);
-		define('zernHost', $zern->oHost);
-		$initZF = zernDIR.'zern'.DS.'init.php';
+		define('zernHOST', $zern->oHost);
+		$initZF = $zern->oDir.'zern'.DS.'init.php';
 		if(!file_exists($initZF)){
-			if(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'dev'){
+			if(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'DEV'){
 				exit("ZE404B: ZERN INIT [{$initZF}]");
 			} else {
 				exit("ZE404B");
@@ -38,7 +38,7 @@ else {
 			require oPROJECT.'ignite.php';
 		}
 	}
-	elseif(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'dev'){
+	elseif(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'DEV'){
 		exit('ZE404B: ZERN REQUIRED [.zern.php]');
 	}
 }
