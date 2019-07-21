@@ -1,7 +1,7 @@
 <?php
-/* ZERN™ Framework ~ an evolving, robust platform for rapid & efficient development of modem responsive applications and APIs;
+/**ZERN™ Framework ~ an evolving, robust platform for rapid & efficient development of modem responsive applications and APIs;
  * Built by ODAO™ [www.osawere.com] using PHP, SQL, HTML, CSS, JS & derived technology.
- * © July 2019 | beta 1.0
+ * © July 2019 | beta 1.0 | Apache License, Version 2.0
  * ===================================================================================================================
  * Dependency » obj:DB, class:period
  * PHP | auth::zern ~ authentication class
@@ -13,7 +13,7 @@ class oAuth
 	private $url;
 
 
-	//****** CLASS CONSTRUCT  ******//
+	//========== CONSTRUCT ==========//
 	public function __construct($connection, $url='')
 	{
 		if(is_object($connection)){
@@ -23,24 +23,20 @@ class oAuth
 		} else {
 			die('Auth:: requires connection - #ZE001-DB');
 		}
-	} //****** END ******//
+	}
+	//==========** END **==========//
 
 
-	//****** @Prevent DUPLICATION [of class] INSTANCE  ******//
-	private function __clone()
-	{
-		return;
-	} //****** END ******//
 
-
-	//****** @Return SINGLE INSTANCE  ******//
-	public static function instantiate($connection, $app)
+	//========== INSTANTIATE ==========//
+	public static function instantiate($connection, $url='')
 	{
 		if(is_null(self::$instance)){
-			self::$instance = new self($connection, $app);
+			self::$instance = new self($connection, $url);
 		}
 		return self::$instance;
-	} //****** END ******//
+	}
+	//==========** END **==========//
 
 
 	//****** @Return HUMAN READABLE INFORMATION  ******//
@@ -171,10 +167,14 @@ class oAuth
 	{
 		oSession::start();
 		if(empty($_SESSION['oUSER'])){
-			$this->app->redirect('login');
+			$location = 'login';
+			if(!empty($this->url)){$location = $this->url.PS.$location;}
+			oURL::redirect($location);
 		} elseif(!empty($_SESSION['oLOCKED']) && $_SESSION['oLOCKED'] == 'oYEAP'){
 			if(!empty($this->uri) && $this->uri != 'locked'){
-				$this->app->redirect('locked');
+				$location = 'locked';
+				if(!empty($this->url)){$location = $this->url.PS.$location;}
+				oURL::redirect($location);
 			}
 		} else {
 			$user = $this->user($_SESSION['oUSER'], 'PUID');
