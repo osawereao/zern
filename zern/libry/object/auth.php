@@ -9,19 +9,17 @@
 
 class oAuth
 {
-	private static $instance;
 	private $db;
-	public $uri;
-	public $app;
+	private $url;
 
 
 	//****** CLASS CONSTRUCT  ******//
-	public function __construct($connection, $app)
+	public function __construct($connection, $url='')
 	{
 		if(is_object($connection)){
+			if(isset($connection->table)){unset($connection->table);}
 			$this->db = $connection;
-			$this->uri = oURL::uri();
-			$this->app = $app; #app object
+			$this->url = $url;
 		} else {
 			die('Auth:: requires connection - #ZE001-DB');
 		}
@@ -35,8 +33,18 @@ class oAuth
 	} //****** END ******//
 
 
+	//****** @Return SINGLE INSTANCE  ******//
+	public static function instantiate($connection, $app)
+	{
+		if(is_null(self::$instance)){
+			self::$instance = new self($connection, $app);
+		}
+		return self::$instance;
+	} //****** END ******//
+
+
 	//****** @Return HUMAN READABLE INFORMATION  ******//
-	protected static function humanize($user)
+	public static function humanize($user)
 	{
 		if(!empty($user) && is_array($user)){
 			if(isset($user['password'])){unset($user['password']);}
@@ -54,17 +62,6 @@ class oAuth
 			return $user;
 		}
 	}
-
-
-	//****** @Return SINGLE INSTANCE  ******//
-	public static function instantiate($connection, $app)
-	{
-		if(is_null(self::$instance)){
-			self::$instance = new self($connection, $app);
-		}
-		return self::$instance;
-	} //****** END ******//
-
 
 	//****** PASSWORD HASHING  ******//
 	public static function password($password)
@@ -149,7 +146,8 @@ class oAuth
 		}
 
 		if($auto == 'oYEAP'){
-			$this->app->redirect($location, ($duration));
+			if(!empty($this->url)){$location = $this->url.PS.$location;}
+			oURL::redirect($location, ($duration));
 		}
 	} //****** END ******//
 
@@ -214,8 +212,7 @@ class oAuth
 			$query .= " OR `phone` = '" . $userid . "'";
 			$query .= ' LIMIT 1';
 
-			$db = $this->db;
-			$result = $db->runSQL($query, 'oRECORD');
+			$result = $this->db->runSQL($query, 'oRECORD');
 			if($result === false){
 				$resp['oSTATUS'] = 'oNOPE';
 				$resp['oCODE'] = 'E600B3';
@@ -288,8 +285,7 @@ class oAuth
 	{
 		if(!empty($_SESSION['oUSER'])){
 			$condition['PUID'] = $_SESSION['oUSER'];
-			$db = $this->db;
-			$user = $db->select($column, 'oUSERX', $condition, 1, 'oRECORD');
+			$user = $this->db->select($column, 'oUSERX', $condition, 1, 'oRECORD');
 			if(!isset($user['oERROR'])){
 				if($user == 'oNORECORD'){$this->app->redirect('login');}
 				else {return self::humanize($user);}
@@ -304,13 +300,12 @@ class oAuth
 	public function updatePassword($puid, $password, $newpassword)
 	{
 		if(!empty($puid) && !empty($password) && !empty($newpassword)){
-			$db = $this->db;
 			$resp = array();
 
 			#Find user
 			$column = array('PUID', 'password');
 			$condition['PUID'] = $puid;
-			$user = $db->select($column, 'oUSERX', $condition, 1, 'oRECORD');
+			$user = $this->db->select($column, 'oUSERX', $condition, 1, 'oRECORD');
 			if(isset($user['oERROR'])){
 				$resp['oCODE'] = 'E600B2';
 			}
@@ -331,7 +326,7 @@ class oAuth
 						$udata['password'] = self::password($newpassword);
 						$ucondition['PUID'] = $puid;
 
-						$updatePW = $db->updateSQL('oUSERX', $udata, $ucondition, 1, 'oNUMROW');
+						$updatePW = $this->db->updateSQL('oUSERX', $udata, $ucondition, 1, 'oNUMROW');
 						if($updatePW === 1){
 							$this->app->redirect('locked?zern=password-changed');
 						} else {
