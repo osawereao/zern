@@ -4,7 +4,7 @@
 
 > **ZERN™ Framework | Eirvo™**
 > The framework that respects your work-flow, letting you structure and implement solutions on your terms.
-> *"Your project, your work-flow. So code your way" - <cite>[ODAO™ OSAWERE](https://www.osawere.com)</cite>*
+> *"Your project, your work-flow. So code your way" - <cite>[ODAO™](https://www.osawere.com)</cite>*
 
 
 
