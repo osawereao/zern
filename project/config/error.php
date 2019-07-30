@@ -10,6 +10,8 @@
 $oErrorConfig = array();
 
 /*** LOGIN ***/
-
+$oErrorConfig['login'] = array(
+	'E100A1' => 'Please enter your login details',
+);
 
 ?>
