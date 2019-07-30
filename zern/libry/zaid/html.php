@@ -40,12 +40,12 @@ class oHTML {
 		if($e==400){
 			$uri = trim($uri, '400/');
 			$title = 'Bogus Request';
-			$heading = 'Bogus Document';
+			$heading = 'Bogus';
 		}
 		elseif($e==404){
 			$uri = trim($uri, '404/');
 			$title = 'Not Found';
-			$heading = 'Unavailable Document';
+			$heading = 'Unavailable';
 		}
 		elseif($e==403){
 			$uri = trim($uri, '403/');
