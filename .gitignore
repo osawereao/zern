@@ -5,6 +5,7 @@
 *.ali
 
 # Ignore Directory
+/_o/www/
 /_o/ignor/
 _notes/
 .vscode/
