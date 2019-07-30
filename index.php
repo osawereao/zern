@@ -16,7 +16,7 @@ else {
 	require $initKF;
 	if(file_exists('.zern.php')){
 		require '.zern.php';
-		$zern = new ZERN;
+		$zern = new ZERN($oKonfig);
 		$zern->init();
 		$zern->setBP('oDIR', __FILE__);
 		$zern->setBP('oHOST', 'oPREP');
