@@ -77,6 +77,17 @@ class oKit {
 
 
 
+
+	//========== JSON [output content in json format] ==========//
+	public static function jsonResp($data){
+		if(!empty($data)){
+			header('Content-Type: application/json');
+			echo json_encode($data);
+		}
+	}
+	//========== JSON ~end ==========//
+
+
 }
 
 
@@ -130,13 +141,7 @@ function isApache($process='version'){
 
 
 
-//-------------- JSON output ---------------
-function jsonResp($data){
-	if(!empty($data)){
-		header('Content-Type: application/json');
-		echo json_encode($data);
-	}
-}
+
 
 //-------------- Print output ---------------
 function printInfo($info, $ifEmpty=''){
