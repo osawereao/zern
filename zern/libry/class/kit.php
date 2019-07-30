@@ -9,41 +9,77 @@
 
 class oKit {
 
-
-	//-------------- Detect HTTPS & Return true or false ---------------
+	//========== HAS SSL [detect HTTPS & Return true or false] ==========//
 	public static function hasSSL($answer='detect'){
-	$resolve = false;
-	if($answer == 'oYEAP'){$resolve = true;}
-	elseif($answer == 'oNOPE'){$resolve = false;}
-	else {//detect from server
-		$https = 'oNOHTTPS';
-		if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])){$https = $_SERVER['HTTPS'];}
-		if($https !== 'oNOHTTPS'){$https == 'oHTTPS';}
+		$resolve = false;
+		if($answer == 'oYEAP'){$resolve = true;}
+		elseif($answer == 'oNOPE'){$resolve = false;}
+		else {//detect from server
+			$https = 'oNOHTTPS';
+			if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])){$https = $_SERVER['HTTPS'];}
+			if($https !== 'oNOHTTPS'){$https == 'oHTTPS';}
 
-		$port = 'oDEFAULT';
-		if(isset($_SERVER['SERVER_PORT']) && !empty($_SERVER['SERVER_PORT'])){$port = $_SERVER['SERVER_PORT'];}
+			$port = 'oDEFAULT';
+			if(isset($_SERVER['SERVER_PORT']) && !empty($_SERVER['SERVER_PORT'])){$port = $_SERVER['SERVER_PORT'];}
 
-		if($https == 'oHTTPS' || $port == 443){$resolve = true;}
-		elseif(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'oHTTPS'){$resolve = true;}
+			if($https == 'oHTTPS' || $port == 443){$resolve = true;}
+			elseif(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'oHTTPS'){$resolve = true;}
+		}
+		return $resolve;
 	}
-	return $resolve;
-}
+	//========== HAS SSL ~end ==========//
 
-//-------------- Force URL to run HTTPS ---------------
+
+
+	//========== SSL ENFORCER [force URL to run HTTPS] ==========//
 	public static function imposeSSL($permanent='oNOPE'){
-	if(empty($_SESSION['imposeSSL'])){
-		$protocol = self::hasSSL() ? 'https' : 'http';
-		if($protocol != 'https'){
-			$url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			$_SESSION['imposeSSL'] = 'oYEAP';
-			if($permanent == 'oYEAP'){header('HTTP/1.1 301 Moved Permanently');}
-			oURL::redirect($url);
-			exit;
+		if(empty($_SESSION['imposeSSL'])){
+			$protocol = self::hasSSL() ? 'https' : 'http';
+			if($protocol != 'https'){
+				$url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+				$_SESSION['imposeSSL'] = 'oYEAP';
+				if($permanent == 'oYEAP'){header('HTTP/1.1 301 Moved Permanently');}
+				oURL::redirect($url);
+				exit;
+			}
 		}
 	}
-}
+	//========== SSL ENFORCER ~end ==========//
+
+
+
+	//========== ERROR HANDLER [prepare & process] ==========//
+	public static function isError($code, $source='', $return='oMSG'){
+		global $oErrorConfig;
+		if(!empty($oErrorConfig) && !empty($oErrorConfig[$source]) && is_array($oErrorConfig[$source])){
+			$error = $oErrorConfig[$source];
+			if($return == 'oMSG' && array_key_exists($code, $error)){return $error[$code];}
+		}
+		return '';
+	}
+	//========== ERROR HANDLER ~end ==========//
+
+
+
+	//========== RESPONSE [prepare & return] ==========//
+	public static function response($resp='', $source=''){
+		$o['oSTATUS'] = ''; $o['oCODE'] = ''; $o['oMSG'] =''; $o['oDATA'] = '';
+		if(!empty($resp['oSTATUS'])){$o['oSTATUS'] = $resp['oSTATUS'];}
+		if(!empty($resp['oCODE'])){
+			$o['oCODE'] = $resp['oCODE'];
+			$resp['oMSG'] = self::isError($o['oCODE'], $source);
+		}
+		if(!empty($resp['oMSG'])){$o['oMSG'] = $resp['oMSG'];}
+		if(!empty($resp['oDATA'])){$o['oDATA'] = $resp['oDATA'];}
+		return $o;
+	}
+	//========== RESPONSE ~end ==========//
+
+
 
 }
+
+
 //-------------- Check if variable is actually empty ---------------
 function isEmpty($data=''){
 	if(!isset($data)){return true;}
@@ -110,14 +146,7 @@ function printInfo($info, $ifEmpty=''){
 
 
 //-------------- Process error ---------------
-function isError($code, $source='', $return='oMSG'){
-	global $oErrorConfig;
-	if(!empty($oErrorConfig) && !empty($oErrorConfig[$source]) && is_array($oErrorConfig[$source])){
-		$error = $oErrorConfig[$source];
-		if($return == 'oMSG' && array_key_exists($code, $error)){return $error[$code];}
-	}
-	return '';
-}
+
 
 
 //-------------- Out message ---------------
@@ -128,18 +157,8 @@ function printMsg($data='', $process='export'){
 	}
 }
 
-//-------------- Prepare isError response ---------------
-function response($resp='', $source=''){
-	$output['oSTATUS'] = ''; $output['oCODE'] = ''; $output['oMSG'] =''; $output['oDATA'] = '';
-	if(!empty($resp['oSTATUS'])){$output['oSTATUS'] = $resp['oSTATUS'];}
-	if(!empty($resp['oCODE'])){
-		$output['oCODE'] = $resp['oCODE'];
-		$resp['oMSG'] = isError($output['oCODE'], $source);
-	}
-	if(!empty($resp['oMSG'])){$output['oMSG'] = $resp['oMSG'];}
-	if(!empty($resp['oDATA'])){$output['oDATA'] = $resp['oDATA'];}
-	return $output;
-}
+//-------------- Prepare isError & other response ---------------
+
 
 //-------------- Debugging ---------------
 
