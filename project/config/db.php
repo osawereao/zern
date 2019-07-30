@@ -1,11 +1,11 @@
 <?php
 //========== DATABASE CONFIGURATION ==========//
 $oKonfig['db'] = array(
-	'name' => 'koda',
+	'name' => 'zern',
 	// 'user' => 'zenq',
 	// 'pass' => 'ZenQ',
 	// 'host' => 'localhost',
 	// 'driver' => 'PDO',
-	// 'table' => 'userx'
+	// 'table' => 'userz'
 );
 ?>
