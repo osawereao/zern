@@ -19,6 +19,10 @@ class oPDO {
 			if(!empty($config['table'])){$this->table = $config['table'];}
 
 			$this->pdo = $this->connect($config);
+			if(!empty($config['timezone'])){
+				$timezone = (new DateTime('now', new DateTimeZone($config['timezone'])))->format('P');
+				$this->pdo->exec("SET time_zone='$timezone';");
+			}
 			return $this->pdo;
 		}
 		else {
