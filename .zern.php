@@ -218,7 +218,6 @@ class ZERN {
 	//==========** END **==========//
 
 
-
 	//========== ROUTER HANDLER ==========//
 	public function router($link='oGET', $route='oGET')
 	{
