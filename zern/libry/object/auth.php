@@ -208,7 +208,7 @@ class oAuth
 			$query .= " OR `username` = '" . self::ocrypt($userid, 'oEN64') . "'";
 			$query .= ' LIMIT 1';
 			*/
-			echo $query = "SELECT `PUID`, `type`, `password` FROM `{$table}`";
+			$query = "SELECT `PUID`, `type`, `password` FROM `{$table}`";
 			$query .= " WHERE '" . self::ocrypt($userid, 'oEN64') . "' IN (`email`, `username`)";
 			$query .= " OR `phone` = '" . $userid . "'";
 			$query .= ' LIMIT 1';
