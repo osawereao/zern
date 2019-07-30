@@ -171,9 +171,9 @@ class ZERN {
 	//==========** END **==========//
 
 
-
 	//========== SET BASEURL ==========//
-	public function setURL(){
+	public function setURL()
+	{
 		if(!empty($this->oHost)){$o = $this->oHost;}
 		elseif(defined('zernURL')){$o = zernURL;}
 		elseif(!empty($_SERVER["SERVER_NAME"])){$o = $_SERVER["SERVER_NAME"];}
@@ -218,6 +218,50 @@ class ZERN {
 		return;
 	}
 	//==========** END **==========//
+
+
+
+	//========== DOCUMENT TITLE ==========//
+	public function title($return='oPAGE')
+	{
+		$title='';
+		if($this->oLink != 'index'){
+			#TODO ~ capitalize certain words
+			$capWords = array('hmo');
+			if(in_array($this->oLink, $capWords)){$this->oLink = strtoupper($this->oLink);}
+			$title = trim($this->oLink);
+			$title = str_replace('-', ' ', $this->oLink);
+			if(!empty($this->oAction) && $this->oAction != 'default'){$title = $this->oAction.' '.$title;}
+		}
+
+		#if return page title
+		if($return == 'oPAGE'){
+			if(!empty($title)){$title = $title.' - ';}
+			$title = $title.$this->project;
+		}
+
+
+		if(!empty($title)){return $title = ucwords($title);}
+		return false;
+	}
+	//==========** END **==========//
+
+
+
+	//========== VIEW [get & set] ==========//
+	public function view($data='')
+	{
+		#TODO ~ set view
+		if(empty($data)){
+			$link = $this->oLink;
+			$action = $this->oAction;
+		}
+		$o = $link;
+		if($action != 'default'){$o .= '_'.$action;}
+		return $o.'.php';
+	}
+	//==========** END **==========//
+
 
 
 	//========== FILE LOADER [only add files] ==========//
