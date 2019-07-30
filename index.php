@@ -32,10 +32,10 @@ else {
 		}
 		else {
 			require $initZF;
-			if((!defined('oPROJECT') || oPROJECT == '') || !file_exists(oPROJECT.'zern-ignite.php')){
+			if((!defined('oPROJECT') || oPROJECT == '') || !file_exists(oPROJECT.'ignite.php')){
 				exit('ZE404C: PROJECT IGNITION');
 			}
-			require oPROJECT.'zern-ignite.php';
+			require oPROJECT.'ignite.php';
 		}
 	}
 	elseif(!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'DEV'){
