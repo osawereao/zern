@@ -65,12 +65,12 @@ CREATE TABLE IF NOT EXISTS `userz` (
   KEY `OtherName` (`OtherName`),
   KEY `DOB` (`DOB`),
   KEY `Sex` (`Sex`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table zern.userz: ~1 rows (approximately)
 /*!40000 ALTER TABLE `userz` DISABLE KEYS */;
 REPLACE INTO `userz` (`AUID`, `PUID`, `RUID`, `EUID`, `Author`, `Created`, `Entry`, `Status`, `Username`, `Email`, `Phone`, `Password`, `PIN`, `Type`, `Privilege`, `LastName`, `FirstName`, `OtherName`, `DOB`, `Sex`, `LGA`, `State`, `Country`, `ReferralID`, `ReferrerID`, `DP`) VALUES
-	(1, '246638x8260252619402H1gM1436537524', '925955857OIh2k177679760ey2452F4Z45i71630L', NULL, 'ZERN', '2019-07-30 03:05:27', 1, 1, 'ZGV2OA==', 'ZGV2OEB6ZW5xLmNh', '09026636728', '$2y$10$SAxVViZN3jMDOn6ccw/rDOA3eIZSQBIYzr3vmWePyf8GIlbd.skke', 1314, 'gcVc29mdHdhcmU=mgNzP', 20, 'Po2T3Nhd2VyZQ==NR7kW', 'oaQQW50aG9ueQ==a0CK1', 'QB3T0RBTw==pod12', '2019-07-30', 'M', 'Oredo', 'Edo', 'NG', 'Dev8', 'SELF', NULL);
+	(1, '6S8545672008F32043N06201683g5124', '582299713d1TPV9727387890531jLY06U556ikZ4g', NULL, 'ZERN', '2019-07-30 17:53:23', 1, 1, 'ZGV2OA==', 'ZGV2OEB6ZW5xLmNh', '09026636728', '$2y$10$Gycd2VGOv5jZwFHAU.2Sf.MrMn2oUArsB/C.Oawppa/jCkDA3DhRu', 1314, '8jic29mdHdhcmU=ugj8P', 20, 'YwgT3Nhd2VyZQ==Ixy6e', '0yHQW50aG9ueQ==2dhuW', 'oRMT0RBTw==lNVO0', '1987-10-31', 'M', 'Oredo', 'Edo', 'NG', 'Dev8', 'SELF', NULL);
 /*!40000 ALTER TABLE `userz` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
