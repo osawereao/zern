@@ -11,6 +11,12 @@ class ZERN {
 	private $konfig;
 
 
+	//========== CONSTRUCT ==========//
+	public function __construct($konfig='')
+	{
+		if(!empty($konfig)){$this->konfig = $konfig;}
+		return;
+	}
 	//========== INITIALIZE ==========//
 	public function init($zone='o9JA')
 	{
