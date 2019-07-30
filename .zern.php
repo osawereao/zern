@@ -155,9 +155,7 @@ class ZERN {
 	//========== SET ROUTE ==========//
 	public function setRoute($eval=''){
 		if(class_exists('oURL')){
-			if(empty($this->route)){
-				$this->oRoute = oURL::route($eval);
-			}
+			if(empty($this->oRoute)){$this->oRoute = oURL::route($eval);}
 			$uriData = oURL::uriData();
 			if(!empty($uriData)){
 				$this->oURI = $uriData['uri'];
@@ -219,6 +217,47 @@ class ZERN {
 	}
 	//==========** END **==========//
 
+
+
+	//========== ROUTER HANDLER ==========//
+	public function router($link='oGET', $route='oGET')
+	{
+		if(empty($link) || $link=='oGET'){$link = $this->oLink;}
+		if(empty($route) || $route=='oGET'){$route = $this->oRoute;}
+
+		if(!empty($this->link_allowed) && array_key_exists($link, $this->link_allowed)){
+			if(!empty($this->link_allowed[$link])){$organizer = oRGANIZ.strtolower($this->link_allowed[$link]).'.php';}
+			else {
+				$organizer = oRGANIZ.$link.'.php';
+				if(!file_exists($organizer)){
+					if(!empty($this->link_allowed['default'])){$organizer = oRGANIZ.strtolower($this->link_allowed['default'].'.php');}
+					else {$organizer = oRGANIZ.'index.php';}
+				}
+			}
+
+			if(file_exists($organizer)){$o = $organizer;}
+			else {
+				if(defined('oAPPMODE') && oAPPMODE == 'DEV'){
+					exit("<p>Missing Organizers:<br> REQUESTED - <strong>[".oRGANIZ."{$link}.php]</strong><br> DEFAULT - [<strong>{$organizer}]</strong></p>");
+				}
+				elseif(defined('oAPPMODE') && oAPPMODE == 'BETA'){
+					exit("The resource [<strong>{$link}]</strong> is unavailable");
+				} else {
+					oHTML::eHTTPView(404);
+				}
+			}
+		}
+		else {
+			$http = oDESIGN.'ehttp.php';
+			if(file_exists($http)){$o = $http;}
+			else {
+				oHTML::eHTTPView(400);
+			}
+		}
+
+		return $o;
+	}
+	//==========** END **==========//
 
 
 	//========== DOCUMENT TITLE ==========//
