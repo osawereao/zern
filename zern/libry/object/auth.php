@@ -201,14 +201,7 @@ class oAuth
 		if(!empty($userid) && !empty($password)){
 			$userid = oInput::clean($userid);
 			$password = oInput::clean($password);
-
-			/* 1st Query
-			$query = "SELECT `PUID`, `type`, `password` FROM `{$table}`";
-			$query .= " WHERE '" . $userid . "' IN (`email`,`phone`, `username`)";
-			$query .= " OR `username` = '" . self::ocrypt($userid, 'oEN64') . "'";
-			$query .= ' LIMIT 1';
-			*/
-			$query = "SELECT `PUID`, `type`, `password` FROM `{$table}`";
+			$query = "SELECT `PUID`, `RUID`, `Type`, `Password` AS `password` FROM `{$table}`";
 			$query .= " WHERE '" . self::ocrypt($userid, 'oEN64') . "' IN (`email`, `username`)";
 			$query .= " OR `phone` = '" . $userid . "'";
 			$query .= ' LIMIT 1';
@@ -231,6 +224,8 @@ class oAuth
 				$resp['oCODE'] = 'E501A1'; #developer error (no implemented correctly)
 				return $resp;
 			} else {
+				var_dump($result);
+				die;
 				$passwordCheck = self::isPassword($password, $result['password']);
 				unset($result['password']); #unset password as it has already been used
 
