@@ -28,6 +28,7 @@ class ZERN {
 		#TODO ~ validate timezone's input
 		if($zone == 'o9JA'){$zone = 'Africa/Lagos';}
 		date_default_timezone_set($zone);
+		if(!empty($zone)){$this->timezone = $zone;}
 	}
 	//==========** END **==========//
 
@@ -191,6 +192,7 @@ class ZERN {
 	public function setDB()
 	{
 		$db = array();
+		if(!empty($this->timezone)){$db['timezone'] = $this->timezone;}
 		if(!empty($this->db_name)){$db['name'] = $this->db_name; unset($this->db_name);} else {$db['name'] = 'zenq';}
 		if(!empty($this->db_user)){$db['user'] = $this->db_user; unset($this->db_user);} else {$db['user'] = 'zenq';}
 		if(!empty($this->db_pass)){$db['pass'] = $this->db_pass; unset($this->db_pass);} else {$db['pass'] = 'ZenQ';}
