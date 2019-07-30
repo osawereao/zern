@@ -12,6 +12,10 @@ $oErrorConfig = array();
 /*** LOGIN ***/
 $oErrorConfig['login'] = array(
 	'E100A1' => 'Please enter your login details',
+
+	'E400A1' => 'Your UserID and password are required',
+	'E400A2' => 'Your UserID is required',
+	'E400A3' => 'Your password is required',
 );
 
 ?>
