@@ -224,8 +224,6 @@ class oAuth
 				$resp['oCODE'] = 'E501A1'; #developer error (no implemented correctly)
 				return $resp;
 			} else {
-				var_dump($result);
-				die;
 				$passwordCheck = self::isPassword($password, $result['password']);
 				unset($result['password']); #unset password as it has already been used
 
