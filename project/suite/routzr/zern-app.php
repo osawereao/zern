@@ -14,16 +14,9 @@ if(isset($zern->Auth)){
 	}
 	// $zernAuth->timeOut('locked', 5000);
 	// require oUTIL.'auth.php';
-// require $zernApp->router();
-// $zernAuth->timeIn();
-
-// $input['status'] = 2;
-
-// $input['dept'] = 'APP';
-
-
-
-
+// require $zern->router();
+$zern->Auth->timeIn();
 }
-echo '<p>'.$zern->oLink.'</p>';
+
+echo '<p>'.$zern->router().'</p>';
 ?>
