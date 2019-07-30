@@ -23,7 +23,6 @@ if(!empty($zern)){
 	oKit::imposeSSL();
 
 	/*** ROUTE everything to APP [specific to this application] ***/
-	// if($zern->oRoute == 'site' || $zern->oRoute == 'ipaddress'){$zern->oRoute = 'app';}
 	if($zern->oRoute != 'app'){$zern->oRoute = 'app';}
 
 	$routzr = oROUT.'zern-'.$zern->oRoute.'.php';
