@@ -23,7 +23,7 @@ if(!empty($zern)){
 	oKit::imposeSSL();
 
 	/*** Set IPAddress as APP [specific to this application] ***/
-	if($zern->oRoute == 'ipaddress'){$zern->oRoute = 'app';}
+	#if($zern->oRoute == 'ipaddress'){$zern->oRoute = 'app';}
 
 	/*** Routing Request ***/
 	#$routzr = oROUT.$zern->oRoute.'.php'; #use case - Router is specific to route
