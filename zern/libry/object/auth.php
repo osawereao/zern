@@ -150,7 +150,7 @@ class oAuth
 
 
 	//****** USER INFORMATION ******//
-	public function user($puid, $column = '*', $table ='oUSERX', $return = 'oRECORD')
+	public function user($puid, $column = '*', $table ='oUSER_TABLE', $return = 'oRECORD')
 	{
 		$db = $this->db;
 		$condition['PUID'] = $puid;
@@ -196,7 +196,7 @@ class oAuth
 
 
 	//****** LOGIN USER ******//
-	public function login($userid, $password, $table = 'oUSERX')
+	public function login($userid, $password, $table = 'oUSER_TABLE')
 	{
 		if(!empty($userid) && !empty($password)){
 			$userid = oInput::clean($userid);
@@ -208,7 +208,7 @@ class oAuth
 			$query .= " OR `username` = '" . self::ocrypt($userid, 'oEN64') . "'";
 			$query .= ' LIMIT 1';
 			*/
-			$query = "SELECT `PUID`, `type`, `password` FROM `{$table}`";
+			echo $query = "SELECT `PUID`, `type`, `password` FROM `{$table}`";
 			$query .= " WHERE '" . self::ocrypt($userid, 'oEN64') . "' IN (`email`, `username`)";
 			$query .= " OR `phone` = '" . $userid . "'";
 			$query .= ' LIMIT 1';
@@ -286,7 +286,7 @@ class oAuth
 	{
 		if(!empty($_SESSION['oUSER'])){
 			$condition['PUID'] = $_SESSION['oUSER'];
-			$user = $this->db->select($column, 'oUSERX', $condition, 1, 'oRECORD');
+			$user = $this->db->select($column, 'oUSER_TABLE', $condition, 1, 'oRECORD');
 			if(!isset($user['oERROR'])){
 				if($user == 'oNORECORD'){$this->app->redirect('login');}
 				else {return self::humanize($user);}
@@ -306,7 +306,7 @@ class oAuth
 			#Find user
 			$column = array('PUID', 'password');
 			$condition['PUID'] = $puid;
-			$user = $this->db->select($column, 'oUSERX', $condition, 1, 'oRECORD');
+			$user = $this->db->select($column, 'oUSER_TABLE', $condition, 1, 'oRECORD');
 			if(isset($user['oERROR'])){
 				$resp['oCODE'] = 'E600B2';
 			}
@@ -327,7 +327,7 @@ class oAuth
 						$udata['password'] = self::password($newpassword);
 						$ucondition['PUID'] = $puid;
 
-						$updatePW = $this->db->updateSQL('oUSERX', $udata, $ucondition, 1, 'oNUMROW');
+						$updatePW = $this->db->updateSQL('oUSER_TABLE', $udata, $ucondition, 1, 'oNUMROW');
 						if($updatePW === 1){
 							$this->app->redirect('locked?zern=password-changed');
 						} else {
