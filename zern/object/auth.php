@@ -202,8 +202,8 @@ class oAuth
 			$userid = oInput::clean($userid);
 			$password = oInput::clean($password);
 			$query = "SELECT `PUID`, `RUID`, `Type`, `Password` AS `password` FROM `{$table}`";
-			$query .= " WHERE '" . self::ocrypt($userid, 'oEN64') . "' IN (`email`, `username`)";
-			$query .= " OR `phone` = '" . $userid . "'";
+			$query .= " WHERE '" . self::ocrypt($userid, 'oEN64') . "' IN (`Email`, `Username`)";
+			$query .= " OR `Phone` = '" . $userid . "'";
 			$query .= ' LIMIT 1';
 
 			$result = $this->db->runSQL($query, 'oRECORD');
