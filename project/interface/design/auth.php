@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo $zern->linkToFile('favicon.ico');?>">
 	<title><?php echo $zern->title();?></title>
 	<style>html {visibility: hidden; opacity: 0;}</style>
 	<link href="<?php echo $zern->linkToFile('fontawesome.css');?>" rel="stylesheet" type="text/css">
