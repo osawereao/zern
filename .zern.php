@@ -332,6 +332,8 @@ class ZERN {
 			if($as == 'oAUTO'){
 				if(oText::in($name, '.css')){$o = CSS.$name;}
 				elseif(oText::in($name, '.js')){$o = JS.$name;}
+				elseif(oText::in($name, '.ico')){$o = ICON.$name;}
+				elseif(oText::in($name, '-icon')){$o = ICON.$name;}
 			}
 		}
 
