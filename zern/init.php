@@ -9,11 +9,10 @@
 
 //========== DIRECTOR STRUCTURE [directory path] ==========//
 # Define ENGINE DS
-defined('oENGINE') ? null : define('oENGINE', zernDIR.'zern'.DS);
-defined('oBOND') ? null : define('oBOND', oENGINE.'bond'.DS);
-defined('oLIBRY') ? null : define('oLIBRY', oENGINE.'libry'.DS);
-defined('oLIBCLAS') ? null : define('oLIBCLAS', oLIBRY.'class'.DS);
-defined('oLIBFUNC') ? null : define('oLIBFUNC', oLIBRY.'func'.DS);
+defined('oLIBRY') ? null : define('oLIBRY', zernDIR.'zern'.DS);
+defined('oBOND') ? null : define('oBOND', oLIBRY.'bond'.DS);
+defined('oCLASS') ? null : define('oCLASS', oLIBRY.'class'.DS);
+defined('oFUNC') ? null : define('oFUNC', oLIBRY.'func'.DS);
 defined('oLIBJ') ? null : define('oLIBJ', oLIBRY.'object'.DS);
 defined('oLIBZ') ? null : define('oLIBZ', oLIBRY.'zaid'.DS);
 
@@ -59,11 +58,11 @@ defined('FONT') ? null : define('FONT', 'font' . PS);
 if(file_exists(oCONFIG.'db.php')){require oCONFIG.'db.php';}
 if(file_exists(oCONFIG.'link.php')){require oCONFIG.'link.php';}
 if(file_exists(oCONFIG.'error.php')){require oCONFIG.'error.php';}
-ZERN::inc(oLIBCLAS.'session');
-ZERN::inc(oLIBCLAS.'kit');
-ZERN::inc(oLIBCLAS.'text');
-ZERN::inc(oLIBCLAS.'url');
-ZERN::inc(oLIBCLAS.'period');
-ZERN::inc(oLIBFUNC.'randomiz');
+ZERN::inc(oCLASS.'session');
+ZERN::inc(oCLASS.'kit');
+ZERN::inc(oCLASS.'text');
+ZERN::inc(oCLASS.'url');
+ZERN::inc(oCLASS.'period');
+ZERN::inc(oFUNC.'randomiz');
 ZERN::inc(oLIBZ.'html');
 ?>
