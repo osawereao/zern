@@ -324,6 +324,39 @@ class ZERN {
 	//==========** END **==========//
 
 
+
+	//========== LINK FILES ==========//
+	public function linkToFile($name='', $as='oAUTO', $url='oAUTO'){
+		$o = '';
+		if(!empty($name)){
+			if($as == 'oAUTO'){
+				if(oText::in($name, '.css')){$o = CSS.$name;}
+				elseif(oText::in($name, '.js')){$o = JS.$name;}
+			}
+		}
+
+		if($url == 'oAUTO'){
+			if(!empty($this->oURL)){$o = $this->oURL.PS.$o;}
+		}
+
+		if(!empty($o)){return $o;}
+	}
+	//==========** END **==========//
+
+
+	//========== LINK FILES ==========//
+	public function linkSelf($url='oAUTO'){
+		$o = '';
+		if(!empty($this->oLink)){$o = PS.$this->oLink;}
+		if($url == 'oAUTO'){
+			if(!empty($this->oURL)){$o = $this->oURL.$o;}
+		}
+		return $o;
+	}
+	//==========** END **==========//
+
+
+
 	//========== DEBUG ==========//
 	public static function dbug($data, $printAs='', $continue='oYEAP'){
 		if($printAs == 'oJSON'){jsonResp($data);}
