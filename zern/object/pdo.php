@@ -102,7 +102,6 @@ class oPDO
 		$e['oERROR'] = $resp['oERROR'];
 
 		if (defined('oAPPMODE') && oAPPMODE == 'DEV') {
-			ZERN::dbug($resp);
 			return $e;
 		} elseif ($report == 'oERMSG') {
 			return $resp['oERMSG'];
@@ -527,11 +526,11 @@ class oPDO
 	//==========** END **==========//
 
 
-	//========== DROP DATABASE ==========//
+	//==========** DROP [database] **==========//
 	public function deleteDB(string $database, $subtle = 'oYEAP')
 	{
 		if (!empty($database)) {
-			$name = oInput::clean($database);
+			$database = oInput::clean($database);
 			if ($subtle != 'oYEAP') {
 				$query = "DROP DATABASE `{$database}`";
 			} else {
