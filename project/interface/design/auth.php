@@ -21,13 +21,13 @@
 
 					<div class="form-group">
 						<div class="form-label-group">
-							<input type="email" id="userid" name="userid" class="form-control" placeholder="Email address" value="<?php echo oInput::retain('userid');?>" required autofocus>
+							<input type="email" id="userid" name="userid" class="form-control" placeholder="Email address" value="dev8@zenq.ca" required autofocus> <!-- value="<?php echo oInput::retain('userid');?>" -->
 							<label for="userid">Email address</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="form-label-group">
-							<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+							<input type="password" id="password" name="password" class="form-control" placeholder="Password" value='oDev8#'required>
 							<label for="inputPassword">Password</label>
 						</div>
 					</div>
