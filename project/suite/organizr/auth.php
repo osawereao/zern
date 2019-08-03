@@ -67,10 +67,3 @@ if (!empty($auth)) {
 		require oDESIGN . 'auth.php';
 	}
 }
-
-
-
-
-
-
-ZERN::dbug($auth);
