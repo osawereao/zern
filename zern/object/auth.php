@@ -1,4 +1,5 @@
 <?php
+
 /**ZERN™ Framework ~ an evolving, robust platform for rapid & efficient development of modem responsive applications and APIs;
  * Built by ODAO™ [www.osawere.com] using PHP, SQL, HTML, CSS, JS & derived technology.
  * © July 2019 | beta 1.0 | Apache License, Version 2.0
@@ -14,10 +15,12 @@ class oAuth
 
 
 	//========== CONSTRUCT ==========//
-	public function __construct($connection, $url='', $link='')
+	public function __construct($connection, $url = '', $link = '')
 	{
-		if(is_object($connection)){
-			if(isset($connection->table)){unset($connection->table);}
+		if (is_object($connection)) {
+			if (isset($connection->table)) {
+				unset($connection->table);
+			}
 			$this->db = $connection;
 			$this->url = $url;
 			$this->link = $link;
@@ -30,9 +33,9 @@ class oAuth
 
 
 	//========== INSTANTIATE ==========//
-	public static function instantiate($connection, $url='')
+	public static function instantiate($connection, $url = '')
 	{
-		if(is_null(self::$instance)){
+		if (is_null(self::$instance)) {
 			self::$instance = new self($connection, $url);
 		}
 		return self::$instance;
@@ -43,18 +46,35 @@ class oAuth
 	//****** @Return HUMAN READABLE INFORMATION  ******//
 	public static function humanize($user)
 	{
-		if(!empty($user) && is_array($user)){
-			if(isset($user['password'])){unset($user['password']);}
-			if(!empty($user['username'])){$user['username'] = self::ocrypt($user['username'], 'oDE64');}
-			if(!empty($user['email'])){$user['email'] = self::ocrypt($user['email'], 'oDE64');}
-			if(!empty($user['type'])){$user['type'] = self::ocrypt($user['type'], 'oDECODE');}
-			if(!empty($user['surname'])){$user['surname'] = self::ocrypt($user['surname'], 'oDECODE');}
-			if(!empty($user['firstname'])){$user['firstname'] = self::ocrypt($user['firstname'], 'oDECODE');}
-			if(!empty($user['othername'])){$user['othername'] = self::ocrypt($user['othername'], 'oDECODE');}
-			if(!empty($user['sex'])){
+		if (!empty($user) && is_array($user)) {
+			if (isset($user['password'])) {
+				unset($user['password']);
+			}
+			if (!empty($user['username'])) {
+				$user['username'] = self::ocrypt($user['username'], 'oDE64');
+			}
+			if (!empty($user['email'])) {
+				$user['email'] = self::ocrypt($user['email'], 'oDE64');
+			}
+			if (!empty($user['type'])) {
+				$user['type'] = self::ocrypt($user['type'], 'oDECODE');
+			}
+			if (!empty($user['surname'])) {
+				$user['surname'] = self::ocrypt($user['surname'], 'oDECODE');
+			}
+			if (!empty($user['firstname'])) {
+				$user['firstname'] = self::ocrypt($user['firstname'], 'oDECODE');
+			}
+			if (!empty($user['othername'])) {
+				$user['othername'] = self::ocrypt($user['othername'], 'oDECODE');
+			}
+			if (!empty($user['sex'])) {
 				$sex = strtolower($user['sex']);
-				if($sex == 'f'){$user['sex'] = 'Female';}
-				elseif($sex == 'm'){$user['sex'] = 'Male';}
+				if ($sex == 'f') {
+					$user['sex'] = 'Female';
+				} elseif ($sex == 'm') {
+					$user['sex'] = 'Male';
+				}
 			}
 			return $user;
 		}
@@ -63,7 +83,7 @@ class oAuth
 	//****** PASSWORD HASHING  ******//
 	public static function password($password)
 	{
-		if(!empty($password)){
+		if (!empty($password)) {
 			return password_hash($password, PASSWORD_BCRYPT);
 		}
 		return false;
@@ -72,8 +92,8 @@ class oAuth
 	//****** VERIFIY PASSWORD [HASHED]  ******//
 	public static function isPassword($password, $hashed)
 	{
-		if(!empty($password) && !empty($hashed)){
-			if(password_verify($password, $hashed)){
+		if (!empty($password) && !empty($hashed)) {
+			if (password_verify($password, $hashed)) {
 				return true;
 			}
 		}
@@ -84,36 +104,36 @@ class oAuth
 	//****** ENCRYPTION & DECRYPTION ******//
 	public static function ocrypt(string $string, $action = 'oENCODE', $key = 'oZERN')
 	{
-		if($action == 'oEN64'){
+		if ($action == 'oEN64') {
 			return base64_encode($string);
-		} elseif($action == 'oDE64'){
+		} elseif ($action == 'oDE64') {
 			return base64_decode($string);
-		} elseif($action == 'oENCODE'){
+		} elseif ($action == 'oENCODE') {
 			$pre = randomiz('oCRYPT3');
 			$post = randomiz('oCRYPT5');
 			return $pre . base64_encode($string) . $post;
-		} elseif($action == 'oDECODE'){
+		} elseif ($action == 'oDECODE') {
 			$string = oText::trimNum($string, 5, 'oEND');
 			$string = oText::trimNum($string, 3);
 			return base64_decode($string);
-		} elseif($action == 'oENCRYPT' || $action == 'oDECRYPT'){
+		} elseif ($action == 'oENCRYPT' || $action == 'oDECRYPT') {
 			$crypto = new oCrypt($key);
-			if($action == 'oENCRYPT'){
+			if ($action == 'oENCRYPT') {
 				return $crypto->encrypt($string);
-			} elseif($action == 'oDECRYPT'){
+			} elseif ($action == 'oDECRYPT') {
 				return $crypto->decrypt($string);
 			}
-		} elseif($action == 'oCRYPT'){
+		} elseif ($action == 'oCRYPT') {
 			return self::password($string);
-		} elseif($action == 'oVERIFY' && is_array($string)){
-			if(isset($string['string'])){
+		} elseif ($action == 'oVERIFY' && is_array($string)) {
+			if (isset($string['string'])) {
 				$input = $string['string'];
 			}
-			if(isset($string['hash'])){
+			if (isset($string['hash'])) {
 				$hash = $string['hash'];
 			}
 
-			if(!empty($input) && !empty($hash)){
+			if (!empty($input) && !empty($hash)) {
 				return self::isPassword($input, $hash);
 			}
 		}
@@ -130,71 +150,70 @@ class oAuth
 	//****** TIMEOUT USER SESSION ******//
 	public function timeOut($location = 'locked', $duration = '1800', $auto = 'oYEAP')
 	{
-		if(isset($_SESSION['oLASTACTIME'])){
+		if (isset($_SESSION['oLASTACTIME'])) {
 			$timeIn = $_SESSION['oLASTACTIME'];
 			$timeNow = time();
-			if($timeNow != $timeIn){
+			if ($timeNow != $timeIn) {
 				$timeDiff = oPeriod::secondsApart($timeIn, $timeNow);
-				if($timeDiff > 1){$timeDiff = $timeDiff - 1;}
-				if($timeDiff >= $duration){
+				if ($timeDiff > 1) {
+					$timeDiff = $timeDiff - 1;
+				}
+				if ($timeDiff >= $duration) {
 					$_SESSION['oLOCKED'] = 'oYEAP';
 				}
 			}
 		}
 
-		if($auto == 'oYEAP'){
-			if(!empty($this->url)){$location = $this->url.PS.$location;}
+		if ($auto == 'oYEAP') {
+			if (!empty($this->url)) {
+				$location = $this->url . PS . $location;
+			}
 			oURL::redirect($location, ($duration));
 		}
 	} //****** END ******//
 
 
-	//****** USER INFORMATION ******//
-	public function user($puid, $column = '*', $table ='oUSER_TABLE', $return = 'oRECORD')
+	//==========** ACTIVE USER [information] **==========//
+	public function user($column = '*', $table = 'oUSER_TABLE', $return = 'oRECORD')
 	{
-		$db = $this->db;
-		$condition['PUID'] = $puid;
-		$user = $db->select($column, $table, $condition, 1, $return);
-		if(!isset($user['oERROR'])){
-			return $user;
+		if (!empty($_SESSION['oUSER'])) {
+			$cond['PUID'] = $_SESSION['oUSER'];
 		}
-		#TODO ~log error resulting from QUERY [on production, die on development]
+		$o = $this->db->select($column, $table, $cond, 1, $return);
+		if (!isset($o['oERROR'])) {
+			return $o;
+		}
+		#TODO ~ log error resulting from QUERY [on production, die on development]
 		return false;
-	} //****** END ******//
+	}
 
 
-	//****** AUTHENTICATE USER SESSION ******//
+	//==========** AUTHENTICATE [user session] **==========//
 	public function is()
 	{
-		oSession::start();
-		if(empty($_SESSION['oUSER'])){
-			$location = 'login';
-			if(!empty($this->url)){$location = $this->url.PS.$location;}
-			oURL::redirect($location);
-		} elseif(!empty($_SESSION['oLOCKED']) && $_SESSION['oLOCKED'] == 'oYEAP'){
-			if(!empty($this->link) && $this->link != 'locked'){
-				$location = 'locked';
-				if(!empty($this->url)){$location = $this->url.PS.$location;}
-				oURL::redirect($location);
-			}
+		$location = '';
+		if (!empty($this->url)) {
+			$location = $this->url;
+		}
+		if (empty($_SESSION['oUSER'])) {
+			oURL::redirect($location . PS . 'login');
+		} elseif (empty($_SESSION['oLOCKED'])) {
+			oURL::redirect($location . PS . 'login');
+		} elseif (!empty($_SESSION['oLOCKED']) && $_SESSION['oLOCKED'] == 'oYEAP') {
+			oURL::redirect($location . PS . 'locked');
 		} else {
-			$user = $this->user($_SESSION['oUSER'], 'PUID');
-			if($user === false){
+			$user = $this->user('PUID');
+			if ($user === false) {
 				#TODO ~ log this improbable occurrence
-				if(!empty($this->link) && $this->link != 'login'){
-					$location = 'login';
-					if(!empty($this->url)){$location = $this->url.PS.$location;}
-					oURL::redirect($location);
+				if (!empty($this->link) && $this->link != 'login') {
+					oURL::redirect($location . PS . 'login');
 				}
-			} elseif($user == 'oNORECORD'){
-				if(!empty($this->link) && $this->link != 'login'){
-					$location = 'login';
-					if(!empty($this->url)){$location = $this->url.PS.$location;}
-					oURL::redirect($location);
-				}
-			} elseif(!empty($user['PUID'])){
-				#TODO
+			} elseif (($user == 'oNORECORD') && (!empty($this->link) && $this->link != 'login')) {
+				oURL::redirect($location . PS . 'login');
 			}
+			// 	} elseif(!empty($user['PUID'])){
+			// 		#TODO
+			// 	}
 		}
 	} //****** END ******//
 
@@ -202,7 +221,7 @@ class oAuth
 	//****** LOGIN USER ******//
 	public function login($userid, $password, $table = 'oUSER_TABLE')
 	{
-		if(!empty($userid) && !empty($password)){
+		if (!empty($userid) && !empty($password)) {
 			$userid = oInput::clean($userid);
 			$password = oInput::clean($password);
 			$query = "SELECT `PUID`, `RUID`, `Type`, `Password` AS `password` FROM `{$table}`";
@@ -211,33 +230,33 @@ class oAuth
 			$query .= ' LIMIT 1';
 
 			$result = $this->db->runSQL($query, 'oRECORD');
-			if($result === false){
+			if ($result === false) {
 				$resp['oSTATUS'] = 'oNOPE';
 				$resp['oCODE'] = 'E600B3';
 				return $resp;
-			} elseif(isset($result['oERROR'])){
+			} elseif (isset($result['oERROR'])) {
 				#TODO ~ Log Query Error
 				$resp['oSTATUS'] = 'oNOPE';
 				$resp['oCODE'] = 'E600B2';
 				return $resp;
-			} elseif($result == 'oNORECORD'){
+			} elseif ($result == 'oNORECORD') {
 				$resp['oSTATUS'] = 'oNOPE';
 				$resp['oCODE'] = 'E404A1';
 				return $resp;
-			} elseif(empty($result['password'])){
+			} elseif (empty($result['password'])) {
 				$resp['oCODE'] = 'E501A1'; #developer error (no implemented correctly)
 				return $resp;
 			} else {
 				$passwordCheck = self::isPassword($password, $result['password']);
 				unset($result['password']); #unset password as it has already been used
 
-				if($passwordCheck === false){
+				if ($passwordCheck === false) {
 					$resp['oSTATUS'] = 'oNOPE';
 					$resp['oCODE'] = 'E401A1';
 					return $resp;
 				} else { #When password is valid
 					oSession::start();
-					if(!empty($result['PUID'])){
+					if (!empty($result['PUID'])) {
 						$_SESSION['oUSER'] = $result['PUID'];
 						$_SESSION['oUSERID'] = $userid;
 						$_SESSION['oLOCKED'] = 'oNOPE';
@@ -259,21 +278,23 @@ class oAuth
 	{
 		#TODO ~ collect user and record logout information
 		oSession::start();
-		if(isset($_SESSION['oUSER'])){
+		if (isset($_SESSION['oUSER'])) {
 			oSession::delete('oUSER');
 		}
-		if(isset($_SESSION['oUSERID'])){
+		if (isset($_SESSION['oUSERID'])) {
 			oSession::delete('oUSERID');
 		}
-		if(isset($_SESSION['oLOCKED'])){
+		if (isset($_SESSION['oLOCKED'])) {
 			oSession::delete('oLOCKED');
 		}
-		if(isset($_SESSION['oLASTACTIME'])){
+		if (isset($_SESSION['oLASTACTIME'])) {
 			oSession::delete('oLASTACTIME');
 		}
 		oSession::restart();
-		if(!empty($linkNext)){
-			if(!empty($this->url)){$linkNext = $this->url.PS.$linkNext;}
+		if (!empty($linkNext)) {
+			if (!empty($this->url)) {
+				$linkNext = $this->url . PS . $linkNext;
+			}
 			oURL::redirect($linkNext);
 		}
 	} //****** END ******//
@@ -282,12 +303,15 @@ class oAuth
 	//****** SESSION USER ******//
 	public function userActive($column = '*')
 	{
-		if(!empty($_SESSION['oUSER'])){
+		if (!empty($_SESSION['oUSER'])) {
 			$condition['PUID'] = $_SESSION['oUSER'];
 			$user = $this->db->select($column, 'oUSER_TABLE', $condition, 1, 'oRECORD');
-			if(!isset($user['oERROR'])){
-				if($user == 'oNORECORD'){$this->app->redirect('login');}
-				else {return self::humanize($user);}
+			if (!isset($user['oERROR'])) {
+				if ($user == 'oNORECORD') {
+					$this->app->redirect('login');
+				} else {
+					return self::humanize($user);
+				}
 			}
 			#TODO ~ log error resulting from QUERY [on production, die on development]
 			return false;
@@ -298,35 +322,32 @@ class oAuth
 	//****** MODIFY USER PASSWORD ******//
 	public function updatePassword($puid, $password, $newpassword)
 	{
-		if(!empty($puid) && !empty($password) && !empty($newpassword)){
+		if (!empty($puid) && !empty($password) && !empty($newpassword)) {
 			$resp = array();
 
 			#Find user
 			$column = array('PUID', 'password');
 			$condition['PUID'] = $puid;
 			$user = $this->db->select($column, 'oUSER_TABLE', $condition, 1, 'oRECORD');
-			if(isset($user['oERROR'])){
+			if (isset($user['oERROR'])) {
 				$resp['oCODE'] = 'E600B2';
-			}
-			else {
-				if($user === false){
+			} else {
+				if ($user === false) {
 					$resp['oCODE'] = 'E600B3';
-				}
-				elseif($user == 'oNORECORD'){
+				} elseif ($user == 'oNORECORD') {
 					$resp['oCODE'] = 'E404A1';
-				}
-				else {
-					if(!self::isPassword($password, $user['password'])){
+				} else {
+					if (!self::isPassword($password, $user['password'])) {
 						$resp['oCODE'] = 'E401A1';
-					}
-					else {
+					} else {
 						#Modify password with new password
-						$udata = array(); $cond = array();
+						$udata = array();
+						$cond = array();
 						$udata['password'] = self::password($newpassword);
 						$ucondition['PUID'] = $puid;
 
 						$updatePW = $this->db->updateSQL('oUSER_TABLE', $udata, $ucondition, 1, 'oNUMROW');
-						if($updatePW === 1){
+						if ($updatePW === 1) {
 							$this->app->redirect('locked?zern=password-changed');
 						} else {
 							#TODO ~
@@ -344,7 +365,7 @@ class oAuth
 	public static function isCrypt($crypted, $verify)
 	{
 		$string = self::crypt($crypted, 'decrypt');
-		if($string == $verify){
+		if ($string == $verify) {
 			return true;
 		}
 		return false;
@@ -352,15 +373,15 @@ class oAuth
 
 	public static function restrict($input, $verify, $isCrypt = 'yeap', $redirect = '')
 	{
-		if($isCrypt == 'yeap'){
+		if ($isCrypt == 'yeap') {
 			$valid = self::isCrypt($input, $verify);
-			if(!$valid && !empty($redirect)){
+			if (!$valid && !empty($redirect)) {
 				URL::redirect($redirect);
-			} elseif(!$valid){
+			} elseif (!$valid) {
 				return true;
 			}
-		} elseif($input != $verify){
-			if(!empty($redirect)){
+		} elseif ($input != $verify) {
+			if (!empty($redirect)) {
 				URL::redirect($redirect);
 			}
 			return true;
@@ -370,4 +391,3 @@ class oAuth
 		return false;
 	}
 }
-?>
