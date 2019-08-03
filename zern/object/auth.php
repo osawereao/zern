@@ -182,11 +182,15 @@ class oAuth
 			if($user === false){
 				#TODO ~ log this improbable occurrence
 				if(!empty($this->link) && $this->link != 'login'){
-					$this->app->redirect('login');
+					$location = 'login';
+					if(!empty($this->url)){$location = $this->url.PS.$location;}
+					oURL::redirect($location);
 				}
 			} elseif($user == 'oNORECORD'){
 				if(!empty($this->link) && $this->link != 'login'){
-					$this->app->redirect('login');
+					$location = 'login';
+					if(!empty($this->url)){$location = $this->url.PS.$location;}
+					oURL::redirect($location);
 				}
 			} elseif(!empty($user['PUID'])){
 				#TODO
@@ -251,7 +255,7 @@ class oAuth
 
 
 	//****** LOGOUT USER ******//
-	public function logout($uri = 'login?zern=logout')
+	public function logout($linkNext = 'login?zern=logout')
 	{
 		#TODO ~ collect user and record logout information
 		oSession::start();
@@ -268,8 +272,9 @@ class oAuth
 			oSession::delete('oLASTACTIME');
 		}
 		oSession::restart();
-		if(!empty($uri)){
-			$this->app->redirect($uri);
+		if(!empty($linkNext)){
+			if(!empty($this->url)){$linkNext = $this->url.PS.$linkNext;}
+			oURL::redirect($linkNext);
 		}
 	} //****** END ******//
 
