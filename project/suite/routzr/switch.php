@@ -15,7 +15,7 @@ if(!empty($zern->oRoute)){
 		$noauths = array('login', 'logout', 'locked', 'register');
 		if(!in_array($zern->oLink, $noauths)){
 			$zern->Auth->is();
-			$zern->Auth->timeOut('locked', 50);
+			$zern->Auth->timeOut('locked', 500);
 		}
 	}
 	if($zernRoute != 'site'){
