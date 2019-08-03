@@ -44,7 +44,7 @@ if($zern->oLink == 'login'){
 			$input['userid'] = strtolower($input['userid']);
 			$auth = $zern->Auth->login($input['userid'], $input['password']);
 			if($auth['oCODE'] == 'E200A1' && $zernRoute == 'app'){
-				$zernApp->redirect($zern->oURL.PS.'dashboard');
+				oURL::redirect($zern->oURL.PS.'dashboard');
 			}
 		}
 	} /*** PROCESS Login ~End ***/
