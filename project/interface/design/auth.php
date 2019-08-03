@@ -17,28 +17,28 @@
 			<div class="card-header">Login</div>
 			<div class="card-body">
 				<form id="oForm" name="oForm" class="form-signin" method="POST" action="<?php echo $zern->linkSelf();?>">
+					<?php echo oHTML::notify($auth);?>
+
 					<div class="form-group">
 						<div class="form-label-group">
-							<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-							<label for="inputEmail">Email address</label>
+							<input type="email" id="userid" name="userid" class="form-control" placeholder="Email address" value="<?php echo oInput::retain('userid');?>" required autofocus>
+							<label for="userid">Email address</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="form-label-group">
-							<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+							<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
 							<label for="inputPassword">Password</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="remember-me">
-							Remember Password </label>
+							<label><input type="checkbox" value="remember-me"> Remember Password </label>
 						</div>
 					</div>
-					<a class="btn btn-primary btn-block" href="index.html">Login</a>
+					<button id="submitBTN" name="submitBTN" class="btn btn-primary btn-block" type="submit" tabindex="3">Login</button>
 				</form>
-				<div class="text-center"> <a class="d-block small mt-3" href="register.html">Register an Account</a> <a class="d-block small" href="forgot-password.html">Forgot Password?</a> </div>
+				<div class="text-center"> <a class="d-block small mt-3" href="<?php echo $zern->linkTo('register');?>">Register an Account</a> <a class="d-block small" href="<?php echo $zern->linkTo('reset/password');?>">Forgot Password?</a> </div>
 			</div>
 		</div>
 	</div>
