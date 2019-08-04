@@ -29,3 +29,4 @@ if (!empty($zern->oRoute)) {
 	}
 	$zern->Auth->timeIn();
 }
+?>
