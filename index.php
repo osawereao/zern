@@ -22,6 +22,7 @@ if (!file_exists($initKF)) {
 		define('zernDIR', $zern->oDir);
 		define('zernHOST', $zern->oHost);
 		$initZF = $zern->oDir . 'zern' . DS . 'init.php';
+
 		if (!file_exists($initZF)) {
 			if (!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'DEV') {
 				exit("ZE404B: ZERN INIT [{$initZF}]");
