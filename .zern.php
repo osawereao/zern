@@ -76,7 +76,7 @@ class ZERN
 	}
 
 
-	//========== INITIALIZE ==========//
+	//==========** INITIALIZE **==========//
 	public function init($zone = 'oZERN')
 	{
 		// Disable App when MODE is undefined or set to off
@@ -180,7 +180,7 @@ class ZERN
 	//==========** END **==========//
 
 
-	//========== INITIALIZE APP & SET PROPERTIES ==========//
+	//==========** INITIALIZE APPLICATION [set properties] **==========//
 	public function initApp($konfig = 'oKONFIG')
 	{
 		/*** Maintain PHP Session ***/
@@ -188,15 +188,13 @@ class ZERN
 			oSession::start();
 		}
 		$this->konfig($konfig);
-
-
 		$this->setRoute();
 		$this->setURL();
 		if (isset($this->db_name)) {
 			$this->setDB();
 		}
 	}
-	//==========** END **==========//
+
 
 
 	//========== GET CONFIGURATION ==========//
