@@ -20,8 +20,7 @@ ZERN::inc(oLIBZ.'dbo');
 //========== INITIALIZE & RUN APP ==========//
 if(!empty($zern)){
 	$zern->initApp();
-ZERN::dbug($zern);
-oKit::imposeSSL();
+	oKit::imposeSSL();
 
 	/*** Set IPAddress as APP [specific to this application] ***/
 	#if($zern->oRoute == 'ipaddress'){$zern->oRoute = 'app';}
@@ -38,3 +37,4 @@ oKit::imposeSSL();
 		exit('ZE4042: Missing Router');
 	}
 }
+?>
