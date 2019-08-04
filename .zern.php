@@ -10,47 +10,96 @@
 
 class ZERN
 {
-	//========== CONSTRUCT ==========//
-	//========== CONSTRUCT [initiate database connection] ==========//
-
+	//==========** CONSTRUCT **==========//
 	public function __construct($konfig = '')
 	{
-		if (!empty($konfig)) {
-			if (empty($konfig['zone'])) {
-				$this->init();
-			} else {
-				$this->init($konfig['zone']);
-			}
-			$this->konfig = $konfig;
-		}
+		$this->konfig($konfig);
+		$this->init();
 		return;
 	}
-	//========== INITIALIZE ==========//
-	public function init($zone = 'o9JA')
+
+
+	//==========** ZONE [set timezone] **==========//
+	private function zone($zone = 'oZERN')
 	{
-		/*** Disable App when MODE is undefined or set to off ***/
+		#TODO ~ validate timezone's input
+		if ($zone == 'oZERN') {
+			$zone = 'Africa/Lagos';
+		}
+		date_default_timezone_set($zone);
+		if (!empty($zone)) {
+			$this->zone = $zone;
+		}
+	}
+
+
+	//==========** KONFIG [set object's properties] **==========//
+	public function konfig($konfig = 'oKONFIG')
+	{
+
+		// Determine configuration
+		if (empty($konfig) || $konfig == 'oKONFIG') {
+			global $oKonfig;
+			if (!empty($oKonfig)) {
+				$konfig = $oKonfig;
+			}
+		}
+
+		// Peform configuration data check
+		if (empty($konfig) || !is_array($konfig)) {
+			exit('Configuration is required');
+		}
+
+		// Set timezone as property
+		if (empty($konfig['zone']) && empty($this->zone)) {
+			$this->zone();
+		} elseif (!empty($konfig['zone'])) {
+			if (empty($this->zone)) {
+				$this->zone($konfig['zone']);
+			}
+			unset($konfig['zone']);
+		}
+
+		// Set properties using configuration's data
+		foreach ($konfig as $label => $value) {
+			if (is_array($value) && $label != 'link_allowed' && $label != 'noauths') {
+				foreach ($value as $sub_label => $sub_value) {
+					$subLabel = $label . '_' . $sub_label;
+					if (empty($this->$subLabel)) {
+						$this->$subLabel = $sub_value;
+					}
+				}
+			} elseif (empty($this->$label)) {
+				$this->$label = $value;
+			}
+		}
+	}
+
+
+	//========== INITIALIZE ==========//
+	public function init($zone = 'oZERN')
+	{
+		// Disable App when MODE is undefined or set to off
 		if (!defined('oAPPMODE') || oAPPMODE == '' || oAPPMODE == 'OFF') {
 			exit;
 		}
 
-		/*** Separators ***/
+		// Define Separators
 		defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 		defined('PS') ? null : define('PS', '/');
 
 		mb_internal_encoding("UTF-8");
 		ini_set('session.cache_limiter', 'public');
 		session_cache_limiter(false);
-
-		#TODO ~ validate timezone's input
-		if ($zone == 'o9JA') {
-			$zone = 'Africa/Lagos';
-		}
-		date_default_timezone_set($zone);
-		if (!empty($zone)) {
-			$this->timezone = $zone;
-		}
+		return;
 	}
-	//==========** END **==========//
+
+
+
+
+
+
+
 
 
 	//========== IP VALIDATOR [returns true/false] ==========//
@@ -138,31 +187,8 @@ class ZERN
 		if (class_exists('oSession')) {
 			oSession::start();
 		}
+		$this->konfig($konfig);
 
-		/*** Set Konfig Variable ***/
-		if (empty($konfig) || $konfig == 'oKONFIG') {
-			global $oKonfig;
-			if (!empty($oKonfig)) {
-				$konfig = $oKonfig;
-			}
-		}
-
-		if (empty($konfig) || !is_array($konfig)) {
-			exit('Configuration is required');
-		}
-		$this->konfig = $konfig;
-
-		/*** Continue Setting Variables ***/
-		foreach ($konfig as $label => $value) {
-			if (is_array($value) && $label != 'link_allowed' && $label != 'noauths') {
-				foreach ($value as $sub_label => $sub_value) {
-					$subLabel = $label . '_' . $sub_label;
-					$this->$subLabel = $sub_value;
-				}
-			} else {
-				$this->$label = $value;
-			}
-		}
 
 		$this->setRoute();
 		$this->setURL();
@@ -523,3 +549,4 @@ class ZERN
 	}
 	//==========** END **==========//
 }
+?>
